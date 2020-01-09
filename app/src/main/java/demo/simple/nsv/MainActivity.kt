@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
             .registerError(NiceSampleErrorView())
             .registerRetry(NiceSampleRetryView())
             .wrapContent(view_content)
-//            .wrapContent(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +48,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_retry.setOnClickListener {
-            niceStateView.showRetry()
-                .setOnViewClickListener(R.id.iv_retry) {
-                    niceStateView.showLoading()
-                    view_content.postDelayed({
-                        niceStateView.showContent()
-                    }, 2000)
-                }
-                .setOnViewClickListener(R.id.view_retry) {
-                    toast("view_retry click")
-                }
+            niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
+                niceStateView.showLoading()
+                view_content.postDelayed({
+                    niceStateView.showContent()
+                }, 2000)
+            }.setOnViewClickListener(R.id.view_retry) {
+                toast("view_retry click")
+            }
         }
 
         btn_content.setOnClickListener {
