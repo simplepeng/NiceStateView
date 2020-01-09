@@ -19,24 +19,33 @@ class MainActivity : AppCompatActivity() {
             .registerError(NiceSampleErrorView())
             .registerRetry(NiceSampleRetryView())
             .wrapContent(view_content)
+//            .wrapContent(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        niceStateView.showLoading()
+        niceStateView.showLoading().setOnViewClickListener(R.id.pb_loading) {
+            toast("showLoading")
+        }
 
         btn_loading.setOnClickListener {
-            niceStateView.showLoading()
+            niceStateView.showLoading().setOnViewClickListener(R.id.pb_loading) {
+                toast("showLoading")
+            }
         }
 
         btn_empty.setOnClickListener {
-            niceStateView.showEmpty()
+            niceStateView.showEmpty().setOnViewClickListener(R.id.iv_empty) {
+                toast("showEmpty")
+            }
         }
 
         btn_error.setOnClickListener {
-            niceStateView.showError()
+            niceStateView.showError().setOnViewClickListener(R.id.iv_error) {
+                toast("showError")
+            }
         }
 
         btn_retry.setOnClickListener {

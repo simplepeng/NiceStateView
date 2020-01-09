@@ -1,8 +1,10 @@
 package me.simple.nsv
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import java.lang.NullPointerException
 
 class NiceStateView constructor(
@@ -34,12 +36,12 @@ class NiceStateView constructor(
         return showStateView(STATE_LOADING)
     }
 
-    fun showEmpty() {
-        showStateView(STATE_EMPTY)
+    fun showEmpty(): IStateView {
+        return showStateView(STATE_EMPTY)
     }
 
-    fun showError() {
-        showStateView(STATE_ERROR)
+    fun showError(): IStateView {
+        return showStateView(STATE_ERROR)
     }
 
     fun showRetry(): IStateView {
@@ -151,6 +153,16 @@ class NiceStateView constructor(
                     throw NullPointerException("content view can not be null")
                 }
                 return NiceStateView(this, view)
+            }
+
+            fun wrapContent(activity: Activity): NiceStateView {
+                val contentView =
+                    (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+                return wrapContent(contentView)
+            }
+
+            fun wrapContent(fragment: Fragment): NiceStateView {
+                return wrapContent(fragment.view)
             }
         }
 
