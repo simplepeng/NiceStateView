@@ -5,17 +5,17 @@ import me.simple.nsv.IStateView
 import me.simple.nsv.NsvLog
 import me.simple.nsv.R
 
-class NiceSampleEmptyView : IStateView() {
+class NiceSampleErrorView : IStateView() {
 
-    override fun setLayoutRes() = R.layout.sample_empty_view
+    override fun setLayoutRes() = R.layout.sample_error_view
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        NsvLog.d("NiceSampleEmptyView ----> onAttach")
+        NsvLog.d("NiceSampleErrorView ----> onAttach")
     }
 
     override fun onDetach(view: View) {
         super.onDetach(view)
-        NsvLog.d("NiceSampleEmptyView ----> onDetach")
+        NsvLog.d("NiceSampleErrorView ----> onDetach")
     }
 }

@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 
-class NiceStateLayout : FrameLayout {
+internal class NiceStateLayout : FrameLayout {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -14,22 +14,24 @@ class NiceStateLayout : FrameLayout {
         this.addView(contentView, CONTENT_VIEW_INDEX)
     }
 
-    fun setStateView(iStateView: IStateView, includeView: View) {
-        val lastIncludeView: View? = this.getChildAt(STATE_VIEW_INDEX)
-        if (lastIncludeView == null) {
-            this.addView(includeView, STATE_VIEW_INDEX)
-        } else {
-            iStateView.onDetach(lastIncludeView)
-            this.removeView(lastIncludeView)
-            this.addView(includeView, STATE_VIEW_INDEX)
-            iStateView.onAttach(includeView)
-        }
-
-        includeView.bringToFront()
-    }
-
     fun showContentView() {
         this.removeViewAt(STATE_VIEW_INDEX)
+    }
+
+    fun attachView(curView: View) {
+        val lastView: View? = this.getChildAt(STATE_VIEW_INDEX)
+        if (lastView == null) {
+            this.addView(curView, STATE_VIEW_INDEX)
+        } else {
+            this.removeView(lastView)
+            this.addView(curView, STATE_VIEW_INDEX)
+        }
+
+        curView.bringToFront()
+    }
+
+    fun detachView(lastView: View) {
+        this.removeView(lastView)
     }
 
     companion object {

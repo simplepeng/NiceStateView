@@ -5,7 +5,9 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import me.simple.nsv.NiceStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
+import me.simple.nsv.sample.NiceSampleErrorView
 import me.simple.nsv.sample.NiceSampleLoadingView
+import me.simple.nsv.sample.NiceSampleRetryView
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         NiceStateView.builder()
             .registerLoading(NiceSampleLoadingView())
             .registerEmpty(NiceSampleEmptyView())
+            .registerError(NiceSampleErrorView())
+            .registerRetry(NiceSampleRetryView())
             .wrapContent(view_content)
     }
 

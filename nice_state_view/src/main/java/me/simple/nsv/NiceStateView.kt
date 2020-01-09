@@ -52,23 +52,37 @@ class NiceStateView constructor(
 
     private fun showStateView(key: String) {
         if (curSateViewKey == key) return
-        curSateViewKey = key
 
-        val stateView = getStateView(curSateViewKey)
-        val layoutId = stateView.setLayoutRes()
+        //detach last view
+        val lastIStateView = getStateView(curSateViewKey)
+        if (lastIStateView != null) {
+            val lastView = viewHolder[lastIStateView.setLayoutRes()]
+            if (lastView != null) {
+                lastIStateView.onDetach(lastView)
+                stateLayout.detachView(lastView)
+            }
+        }
 
-        var includeView: View? = viewHolder[layoutId]
-        if (includeView == null) {
-            includeView =
-                LayoutInflater.from(contentView.context).inflate(layoutId, stateLayout, false)
+        //attach current view
+        val curIStateView =
+            getStateView(key) ?: throw NullPointerException("do you have register $key ?")
+
+        var curView: View? = viewHolder[curIStateView.setLayoutRes()]
+        if (curView == null) {
+            curView = LayoutInflater.from(contentView.context)
+                .inflate(curIStateView.setLayoutRes(), stateLayout, false)
+            viewHolder[curIStateView.setLayoutRes()] = curView
         }
 
         contentView.visibility = View.GONE
-        stateLayout.setStateView(stateView, includeView!!)
+        stateLayout.attachView(curView!!)
+        curIStateView.onAttach(curView!!)
+
+        curSateViewKey = key
     }
 
     private fun innerShowContentView() {
-        val curStateView = builder.stateViewMap[curSateViewKey]
+        val curStateView = getStateView(curSateViewKey)
         if (curStateView != null) {
             val detachView = viewHolder[curStateView.setLayoutRes()]
             if (detachView != null) {
@@ -81,9 +95,8 @@ class NiceStateView constructor(
         curSateViewKey = STATE_CONTENT
     }
 
-    private fun getStateView(key: String): IStateView {
+    private fun getStateView(key: String): IStateView? {
         return builder.stateViewMap[key]
-            ?: throw NullPointerException("do you have register $key ?")
     }
 
     companion object {
