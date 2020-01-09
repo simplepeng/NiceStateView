@@ -2,6 +2,7 @@ package demo.simple.nsv
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import me.simple.nsv.NiceStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
@@ -40,10 +41,23 @@ class MainActivity : AppCompatActivity() {
 
         btn_retry.setOnClickListener {
             niceStateView.showRetry()
+                .setOnViewClickListener(R.id.iv_retry) {
+                    niceStateView.showLoading()
+                    view_content.postDelayed({
+                        niceStateView.showContent()
+                    }, 2000)
+                }
+                .setOnViewClickListener(R.id.view_retry) {
+                    toast("view_retry click")
+                }
         }
 
         btn_content.setOnClickListener {
             niceStateView.showContent()
         }
+    }
+
+    private fun toast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 }

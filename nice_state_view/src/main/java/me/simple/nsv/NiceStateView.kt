@@ -30,8 +30,8 @@ class NiceStateView constructor(
         stateLayout.setContentView(contentView)
     }
 
-    fun showLoading() {
-        showStateView(STATE_LOADING)
+    fun showLoading(): IStateView {
+        return showStateView(STATE_LOADING)
     }
 
     fun showEmpty() {
@@ -42,16 +42,18 @@ class NiceStateView constructor(
         showStateView(STATE_ERROR)
     }
 
-    fun showRetry() {
-        showStateView(STATE_RETRY)
+    fun showRetry(): IStateView {
+        return showStateView(STATE_RETRY)
     }
 
     fun showContent() {
         innerShowContentView()
     }
 
-    private fun showStateView(key: String) {
-        if (curSateViewKey == key) return
+    private fun showStateView(
+        key: String
+    ): IStateView {
+        if (curSateViewKey == key) return getStateView(curSateViewKey)!!
 
         //detach last view
         val lastIStateView = getStateView(curSateViewKey)
@@ -76,12 +78,23 @@ class NiceStateView constructor(
 
         contentView.visibility = View.GONE
         stateLayout.attachView(curView!!)
-        curIStateView.onAttach(curView!!)
+        curIStateView.onAttach(curView)
 
         curSateViewKey = key
+        return curIStateView
     }
 
+//    private fun addClick(curIStateView: IStateView, curView: View) {
+//        for ((id, onClick) in curIStateView.listenerMap) {
+//            curView.findViewById<View>(id).setOnClickListener {
+//                onClick.invoke(it)
+//            }
+//        }
+//    }
+
     private fun innerShowContentView() {
+        if (curSateViewKey == STATE_CONTENT) return
+
         val curStateView = getStateView(curSateViewKey)
         if (curStateView != null) {
             val detachView = viewHolder[curStateView.setLayoutRes()]
