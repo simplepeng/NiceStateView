@@ -20,6 +20,8 @@ gayhub上确实没找到一个适合自己的轮子😢
 
 但是这个库也有个缺点：那就是会多增加一层`StateLayout`布局做代理布局，但是其实对布局渲染速率没有多大影响。（想想原来没有`ConstraintLayout`的时候，你嵌套了多少层布局 😈）
 
+如果你只在`Recyclerview`中切换状态布局，也可以试试作者的另外一个库：[StateAdapter](https://github.com/simplepeng/StateAdapter) 😁
+
 ## 导入依赖
 
 ```groovy
