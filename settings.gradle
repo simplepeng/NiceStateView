@@ -1,0 +1,2 @@
+include ':app', ':nice_state_view'
+rootProject.name='NiceStateView'
