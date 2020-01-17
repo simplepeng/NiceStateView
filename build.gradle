@@ -21,7 +21,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven {url 'file:///Users/chenpeng/Desktop/Repositories/' }
+//        maven {url 'file:///Users/chenpeng/Desktop/Repositories/' }
     }
 }
 
