@@ -90,7 +90,7 @@ class NiceSampleLoadingView : IStateView() {
 
 ## 赞助
 
-如果您觉得`SpideMan`帮助了您，可否扶贫一下作者，要是能`10.24`就太👍👍👍啦！
+如果您觉得`NiceStateView`帮助到了您，可否扶贫一下作者，要是能`10.24`就太👍👍👍啦！
 
 您的支持是作者继续努力创作的动力😁😁😁。
 
