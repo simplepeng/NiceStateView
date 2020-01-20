@@ -69,9 +69,9 @@ niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
 
 ```kotlin
 //所以在showLoading()，showEmpty()，showError()，showRetry()后都可以重设样式
- niceStateView.showEmpty()
-						.setText()
-						.setImage				
+niceStateView.showEmpty()
+                .setText(R.id.tv_empty, "这里空空如也~")
+                .setImage(R.id.iv_empty, R.drawable.nsv_empty)
 ```
 
 ## 自定义样式

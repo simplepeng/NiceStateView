@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
             niceStateView.showEmpty().setOnViewClickListener(R.id.iv_empty) {
                 toast("showEmpty")
             }
+
+//            niceStateView.showEmpty()
+//                .setText(R.id.tv_empty, "这里空空如也~")
+//                .setImage(R.id.iv_empty, R.drawable.nsv_empty)
         }
 
         btn_error.setOnClickListener {
