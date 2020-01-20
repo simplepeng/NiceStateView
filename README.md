@@ -10,7 +10,7 @@
 
 ## 为什么重新造这样一个轮子
 
-gayhub上确实没找到一个适合自己的轮子😢
+gayhub上确实没找到一个适合自己的轮子😢。适合自己的轮子才是好轮子-by 鲁迅
 
 找到的大多数的轮子要么都是将状态页面全部加载出来，然后`visible`，`gone`布局达到状态布局切换的效果。这样做会导致明明已经显示了`content`布局，但其实其他状态布局并没有释放，造成了内存浪费。像用到了一些大的Gif，或者lottie这种库，造成的内存压力可想而知。
 
@@ -25,36 +25,53 @@ gayhub上确实没找到一个适合自己的轮子😢
 ## 导入依赖
 
 ```groovy
-implementation 'me.simple:nice-state-view:1.0.0'
+implementation 'me.simple:nice-state-view:1.0.1'
 ```
 
 ## 使用默认样式
 
 ```kotlin
+//初始化注册不同的状态布局
 private val niceStateView: NiceStateView by lazy {
         NiceStateView.builder()
             .registerLoading(NiceSampleLoadingView())
             .registerEmpty(NiceSampleEmptyView())
             .registerError(NiceSampleErrorView())
             .registerRetry(NiceSampleRetryView())
-            .wrapContent(view_content)
+            .wrapContent(view_content)//也可以直接wrap Activity和Fragment
     }
 ...
+//切换状态布局
 niceStateView.showLoading()
 niceStateView.showEmpty()
 niceStateView.showError()
 niceStateView.showRetry()
 niceStateView.showContent()
-//设置点击事件
+```
+
+##设置点击事件
+
+```kotlin
 //showLoading()，showEmpty()，showError()，showRetry()都可以设置点击事件
 niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
                 niceStateView.showLoading()
                 view_content.postDelayed({
                     niceStateView.showContent()
                 }, 2000)
-            }.setOnViewClickListener(R.id.view_retry) {
-                toast("view_retry click")
-            }
+	}.setOnViewClickListener(R.id.view_retry) {
+            toast("view_retry click")
+	}
+```
+
+## 重设图片和文字
+
+有时候两个页面的状态图样式差不多，只是文字或图片有细微差异，所以在`IStateView`中新增了`setText`，`setImage`等方法。
+
+```kotlin
+//所以在showLoading()，showEmpty()，showError()，showRetry()后都可以重设样式
+ niceStateView.showEmpty()
+						.setText()
+						.setImage				
 ```
 
 ## 自定义样式
@@ -90,11 +107,15 @@ class NiceSampleLoadingView : IStateView() {
 
 ## 赞助
 
-如果您觉得`NiceStateView`帮助到了您，可否扶贫一下作者，要是能`10.24`就太👍👍👍啦！
+如果您觉得`NiceStateView`帮助到了您，可选择精准扶贫，要是`10.24`作者就在这里🙇🙇🙇啦！
 
-您的支持是作者继续努力创作的动力😁😁😁。
+您的支持是作者继续努力创作的动力😁😁😁
 
 萌戳下方链接精准扶贫⤵️⤵️⤵️
 
 **[扶贫方式](https://simplepeng.github.io/merge_pay_code/)**
 
+## 版本迭代
+
+* v1.0.1 新增`setText`，`setImage`等方法
+* v1.0.0 首次上传
