@@ -7,7 +7,8 @@ apply plugin: 'com.novoda.bintray-release'
 uploadArchives {
     repositories.mavenDeployer {
         // 本地仓库路径
-        repository(url: 'file:///Users/chenpeng/Desktop/Repositories/')
+//        repository(url: 'file:///Users/chenpeng/Desktop/Repositories/')
+        repository(url: 'file:///Users/simple/Desktop/Repositories/')
         // 唯一标识
         pom.groupId = rootProject.ext.groupId
         // 项目名称

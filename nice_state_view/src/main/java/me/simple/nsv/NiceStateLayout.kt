@@ -3,6 +3,7 @@ package me.simple.nsv
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 
 internal class NiceStateLayout : FrameLayout {
@@ -11,11 +12,16 @@ internal class NiceStateLayout : FrameLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
     fun setContentView(contentView: View) {
-        this.addView(contentView, CONTENT_VIEW_INDEX)
+        val lp = LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        this.addView(contentView, CONTENT_VIEW_INDEX, lp)
     }
 
     fun showContentView() {
         this.removeViewAt(STATE_VIEW_INDEX)
+//        this.requestLayout()
     }
 
     fun attachView(curView: View) {
