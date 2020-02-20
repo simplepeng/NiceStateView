@@ -25,7 +25,7 @@ gayhub上确实没找到一个适合自己的轮子😢。适合自己的轮子�
 ## 导入依赖
 
 ```groovy
-implementation 'me.simple:nice-state-view:1.0.1'
+implementation 'me.simple:nice-state-view:1.0.2'
 ```
 
 ## 使用默认样式
