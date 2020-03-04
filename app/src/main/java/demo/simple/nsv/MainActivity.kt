@@ -1,10 +1,8 @@
 package demo.simple.nsv
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.simple.nsv.NiceStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
@@ -20,6 +18,7 @@ class MainActivity : AppCompatActivity() {
             .registerEmpty(NiceSampleEmptyView())
             .registerError(NiceSampleErrorView())
             .registerRetry(NiceSampleRetryView())
+            .registerCustom(CustomLoginView())
             .wrapContent(view_content)
     }
 
@@ -66,6 +65,10 @@ class MainActivity : AppCompatActivity() {
 
         btn_content.setOnClickListener {
             niceStateView.showContent()
+        }
+
+        btn_custom.setOnClickListener {
+            niceStateView.showCustom(CustomLoginView::class.java)
         }
     }
 
