@@ -15,6 +15,8 @@ uploadArchives {
         pom.artifactId = rootProject.ext.artifactId
         // 版本号
         pom.version = rootProject.ext.publishVersion
+        //
+        pom.packaging = "aar"
     }
 }
 
