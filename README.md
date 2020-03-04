@@ -1,6 +1,6 @@
 # **[NiceStateView](https://github.com/simplepeng/NiceStateView)**
 
-![MIT](https://img.shields.io/badge/License-MIT-orange?style=flat-square)  ![Jcenter](https://img.shields.io/badge/Jcenter-1.0.1-brightgreen?style=flat-square)  ![Androidx](https://img.shields.io/badge/Androidx-Yes-blue?style=flat-square)  ![Api](https://img.shields.io/badge/Api-14+-blueviolet?style=flat-square)  ![Kotlin](https://img.shields.io/badge/Kotlin-Yes-ff6984?style=flat-square)
+![MIT](https://img.shields.io/badge/License-MIT-orange?style=flat-square)  ![Jcenter](https://img.shields.io/badge/Jcenter-1.0.3-brightgreen?style=flat-square)  ![Androidx](https://img.shields.io/badge/Androidx-Yes-blue?style=flat-square)  ![Api](https://img.shields.io/badge/Api-14+-blueviolet?style=flat-square)  ![Kotlin](https://img.shields.io/badge/Kotlin-Yes-ff6984?style=flat-square)
 
 一个超赞的页面状态切换库（加载中，空布局，网络错误，重试）
 
@@ -25,7 +25,7 @@ gayhub上确实没找到一个适合自己的轮子😢。适合自己的轮子�
 ## 导入依赖
 
 ```groovy
-implementation 'me.simple:nice-state-view:1.0.2'
+implementation 'me.simple:nice-state-view:1.0.3'
 ```
 
 ## 使用默认样式
@@ -105,6 +105,16 @@ class NiceSampleLoadingView : IStateView() {
 }
 ```
 
+## 注册自定义的Type
+
+```kotlin
+NiceStateView.builder()
+ .registerCustom(CustomLoginView())
+ .wrapContent(view_content)
+//
+niceStateView.showCustom(CustomLoginView::class.java)
+```
+
 ## 赞助
 
 如果您觉得`NiceStateView`帮助到了您，可选择精准扶贫，要是`10.24`作者就在这里🙇🙇🙇啦！
@@ -117,6 +127,7 @@ class NiceSampleLoadingView : IStateView() {
 
 ## 版本迭代
 
+* v1.0.3 新增`注册，显示`自定义type的方法
 * v1.0.2 fix ConstraintLayout LayoutParams 0dp bug
 * v1.0.1 新增`setText`，`setImage`等方法
 * v1.0.0 首次上传
