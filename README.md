@@ -25,7 +25,7 @@ gayhub上确实没找到一个适合自己的轮子😢。适合自己的轮子�
 ## 导入依赖
 
 ```groovy
-implementation 'me.simple:nice-state-view:1.0.1'
+implementation 'me.simple:nice-state-view:1.0.2'
 ```
 
 ## 使用默认样式
@@ -49,7 +49,7 @@ niceStateView.showRetry()
 niceStateView.showContent()
 ```
 
-##设置点击事件
+## 设置点击事件
 
 ```kotlin
 //showLoading()，showEmpty()，showError()，showRetry()都可以设置点击事件
@@ -117,5 +117,6 @@ class NiceSampleLoadingView : IStateView() {
 
 ## 版本迭代
 
+* v1.0.2 fix ConstraintLayout LayoutParams 0dp bug
 * v1.0.1 新增`setText`，`setImage`等方法
 * v1.0.0 首次上传
