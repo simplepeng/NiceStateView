@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import java.lang.NullPointerException
+import kotlin.reflect.KClass
 
-class NiceStateView constructor(
+class NiceStateView private constructor(
     private var builder: Builder,
     private var contentView: View
 ) {
@@ -50,6 +51,10 @@ class NiceStateView constructor(
 
     fun showContent() {
         innerShowContentView()
+    }
+
+    fun <T> showCustom(clazz: Class<T>): IStateView {
+        return showStateView(clazz.name)
     }
 
     private fun showStateView(
@@ -145,6 +150,11 @@ class NiceStateView constructor(
 
             fun registerLoading(stateView: IStateView): Builder {
                 stateViewMap[STATE_LOADING] = stateView
+                return this
+            }
+
+            fun registerCustom(stateView: IStateView): Builder {
+                stateViewMap[stateView.javaClass.name] = stateView
                 return this
             }
 
