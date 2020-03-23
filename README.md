@@ -53,7 +53,8 @@ niceStateView.showContent()
 
 ```kotlin
 //showLoading()，showEmpty()，showError()，showRetry()都可以设置点击事件
-niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
+niceStateView.showRetry()
+    .setOnViewClickListener(R.id.iv_retry) {
                 niceStateView.showLoading()
                 view_content.postDelayed({
                     niceStateView.showContent()
