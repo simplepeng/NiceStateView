@@ -126,6 +126,10 @@ niceStateView.showCustom(CustomLoginView::class.java)
 
 **[扶贫方式](https://simplepeng.github.io/merge_pay_code/)**
 
+## 技术支持Q群：1078185041
+
+<img src="https://raw.githubusercontent.com/simplepeng/ImageRepo/master/q_group.jpg" width="270px" height="370px">
+
 ## 版本迭代
 
 * v1.0.3 新增`注册，显示`自定义type的方法
