@@ -120,6 +120,7 @@ class NiceStateView private constructor(
     }
 
     companion object {
+
         const val STATE_EMPTY = "state_empty"
         const val STATE_LOADING = "state_loading"
         const val STATE_ERROR = "state_error"
@@ -179,7 +180,7 @@ class NiceStateView private constructor(
         /**
          *
          */
-        fun builder(): Builder {
+        fun newBuilder(): Builder {
             return Builder()
         }
     }
