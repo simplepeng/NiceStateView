@@ -33,7 +33,7 @@ implementation 'me.simple:nice-state-view:1.0.3'
 ```kotlin
 //初始化注册不同的状态布局
 private val niceStateView: NiceStateView by lazy {
-        NiceStateView.builder()
+        NiceStateView.newBuilder()
             .registerLoading(NiceSampleLoadingView())
             .registerEmpty(NiceSampleEmptyView())
             .registerError(NiceSampleErrorView())
@@ -109,7 +109,7 @@ class NiceSampleLoadingView : IStateView() {
 ## 注册自定义的Type
 
 ```kotlin
-NiceStateView.builder()
+NiceStateView.newBuilder()
  .registerCustom(CustomLoginView())
  .wrapContent(view_content)
 //
