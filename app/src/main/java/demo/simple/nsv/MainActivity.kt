@@ -13,7 +13,7 @@ import me.simple.nsv.sample.NiceSampleRetryView
 class MainActivity : AppCompatActivity() {
 
     private val niceStateView: NiceStateView by lazy {
-        NiceStateView.builder()
+        NiceStateView.newBuilder()
             .registerLoading(NiceSampleLoadingView())
             .registerEmpty(NiceSampleEmptyView())
             .registerError(NiceSampleErrorView())

@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import java.lang.NullPointerException
-import kotlin.reflect.KClass
 
 class NiceStateView private constructor(
     private var builder: Builder,
@@ -91,14 +89,6 @@ class NiceStateView private constructor(
         return curIStateView
     }
 
-//    private fun addClick(curIStateView: IStateView, curView: View) {
-//        for ((id, onClick) in curIStateView.listenerMap) {
-//            curView.findViewById<View>(id).setOnClickListener {
-//                onClick.invoke(it)
-//            }
-//        }
-//    }
-
     private fun innerShowContentView() {
         if (curSateViewKey == STATE_CONTENT) return
 
@@ -130,58 +120,59 @@ class NiceStateView private constructor(
         /**
          *
          */
-        class Builder {
-
-            val stateViewMap = mutableMapOf<String, IStateView>()
-
-            fun registerEmpty(stateView: IStateView): Builder {
-                stateViewMap[STATE_EMPTY] = stateView
-                return this
-            }
-
-            fun registerError(stateView: IStateView): Builder {
-                stateViewMap[STATE_ERROR] = stateView
-                return this
-            }
-
-            fun registerRetry(stateView: IStateView): Builder {
-                stateViewMap[STATE_RETRY] = stateView
-                return this
-            }
-
-            fun registerLoading(stateView: IStateView): Builder {
-                stateViewMap[STATE_LOADING] = stateView
-                return this
-            }
-
-            fun registerCustom(stateView: IStateView): Builder {
-                stateViewMap[stateView.javaClass.name] = stateView
-                return this
-            }
-
-            fun wrapContent(view: View?): NiceStateView {
-                if (view == null) {
-                    throw NullPointerException("content view can not be null")
-                }
-                return NiceStateView(this, view)
-            }
-
-            fun wrapContent(activity: Activity): NiceStateView {
-                val contentView =
-                    (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
-                return wrapContent(contentView)
-            }
-
-            fun wrapContent(fragment: Fragment): NiceStateView {
-                return wrapContent(fragment.view)
-            }
-        }
-
-        /**
-         *
-         */
         fun newBuilder(): Builder {
             return Builder()
         }
     }
+
+    /**
+     *
+     */
+    class Builder {
+
+        val stateViewMap = mutableMapOf<String, IStateView>()
+
+        fun registerEmpty(stateView: IStateView): Builder {
+            stateViewMap[STATE_EMPTY] = stateView
+            return this
+        }
+
+        fun registerError(stateView: IStateView): Builder {
+            stateViewMap[STATE_ERROR] = stateView
+            return this
+        }
+
+        fun registerRetry(stateView: IStateView): Builder {
+            stateViewMap[STATE_RETRY] = stateView
+            return this
+        }
+
+        fun registerLoading(stateView: IStateView): Builder {
+            stateViewMap[STATE_LOADING] = stateView
+            return this
+        }
+
+        fun registerCustom(stateView: IStateView): Builder {
+            stateViewMap[stateView.javaClass.name] = stateView
+            return this
+        }
+
+        fun wrapContent(view: View?): NiceStateView {
+            if (view == null) {
+                throw NullPointerException("content view can not be null")
+            }
+            return NiceStateView(this, view)
+        }
+
+        fun wrapContent(activity: Activity): NiceStateView {
+            val contentView =
+                (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+            return wrapContent(contentView)
+        }
+
+        fun wrapContent(fragment: Fragment): NiceStateView {
+            return wrapContent(fragment.view)
+        }
+    }
+
 }
