@@ -4,7 +4,9 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 
 class NiceStateView private constructor(
     private var builder: Builder,
@@ -172,6 +174,10 @@ class NiceStateView private constructor(
 
         fun wrapContent(fragment: Fragment): NiceStateView {
             return wrapContent(fragment.view)
+        }
+
+        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>) {
+
         }
     }
 
