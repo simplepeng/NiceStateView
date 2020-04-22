@@ -1,17 +1,21 @@
-package me.simple.nsv
+package me.simple.nsv.view
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import me.simple.nsv.IStateView
+import me.simple.nsv.NiceStateView
 
 class LayoutStateView internal constructor(
     private var builder: NiceStateView.Builder,
     private var contentView: View
 ) : NiceStateView {
 
-    private var curSateViewKey = NiceStateView.STATE_CONTENT
+    private var curSateViewKey =
+        NiceStateView.STATE_CONTENT
     private var parentViewGroup: ViewGroup? = contentView.parent as ViewGroup?
-    private val stateLayout = NiceStateLayout(contentView.context)
+    private val stateLayout =
+        NiceStateLayout(contentView.context)
     private val viewHolder = mutableMapOf<Int, View>()
 
     init {

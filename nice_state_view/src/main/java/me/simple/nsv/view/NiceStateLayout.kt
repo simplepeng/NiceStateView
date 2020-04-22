@@ -1,4 +1,4 @@
-package me.simple.nsv
+package me.simple.nsv.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -16,7 +16,8 @@ internal class NiceStateLayout : FrameLayout {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        this.addView(contentView, CONTENT_VIEW_INDEX, lp)
+        this.addView(contentView,
+            CONTENT_VIEW_INDEX, lp)
     }
 
     fun showContentView() {
@@ -27,10 +28,14 @@ internal class NiceStateLayout : FrameLayout {
     fun attachView(curView: View) {
         val lastView: View? = this.getChildAt(STATE_VIEW_INDEX)
         if (lastView == null) {
-            this.addView(curView, STATE_VIEW_INDEX)
+            this.addView(curView,
+                STATE_VIEW_INDEX
+            )
         } else {
             this.removeView(lastView)
-            this.addView(curView, STATE_VIEW_INDEX)
+            this.addView(curView,
+                STATE_VIEW_INDEX
+            )
         }
 
         curView.bringToFront()

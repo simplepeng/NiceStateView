@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 class StateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
     var typeSate = ""
-        private set
 
     fun setState(typeState: String) {
         typeSate = typeState

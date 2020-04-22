@@ -2,7 +2,7 @@ package me.simple.nsv.sample
 
 import android.view.View
 import me.simple.nsv.IStateView
-import me.simple.nsv.NsvLog
+import me.simple.nsv.utils.NsvLog
 import me.simple.nsv.R
 
 class NiceSampleErrorView : IStateView() {

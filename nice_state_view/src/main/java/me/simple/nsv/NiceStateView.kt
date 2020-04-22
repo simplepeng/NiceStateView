@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import me.simple.nsv.adapter.AdapterStateView
+import me.simple.nsv.view.LayoutStateView
 
 interface NiceStateView {
 
@@ -28,6 +29,7 @@ interface NiceStateView {
         const val STATE_ERROR = "state_error"
         const val STATE_RETRY = "state_retry"
         const val STATE_CONTENT = "state_content"
+        const val STATE_NORMAL = "state_normal"
 
         /**
          *

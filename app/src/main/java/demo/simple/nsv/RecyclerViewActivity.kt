@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -40,15 +41,13 @@ class RecyclerViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recyclerview)
 
         recyclerView.run {
-            layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
+//            layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
+            layoutManager = GridLayoutManager(this@RecyclerViewActivity, 2)
             adapter = niceStateView
         }
 
         btn_loading.setOnClickListener {
             niceStateView.showLoading()
-            recyclerView.postDelayed({
-                initData()
-            },2000)
         }
 
         btn_empty.setOnClickListener {
@@ -64,6 +63,7 @@ class RecyclerViewActivity : AppCompatActivity() {
         }
 
         btn_content.setOnClickListener {
+            initData()
             niceStateView.showContent()
         }
 
@@ -71,16 +71,16 @@ class RecyclerViewActivity : AppCompatActivity() {
             niceStateView.showCustom(CustomLoginView::class.java)
         }
 
-       btn_loading.performClick()
+//        btn_loading.performClick()
     }
 
-    private fun initData(){
+    private fun initData() {
         mItems.clear()
-        for (i in 0..40) {
+        for (i in 0..11) {
             mItems.add(i.toString())
         }
-        mAdapter.notifyDataSetChanged()
-//        niceStateView.showContent()
+//        mAdapter.notifyDataSetChanged()
+        niceStateView.showContent()
     }
 }
 

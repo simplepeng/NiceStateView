@@ -16,11 +16,10 @@ import java.util.*
 @Suppress("UNCHECKED_CAST")
 class AdapterStateView<VH : ViewHolder> internal constructor(
     private var builder: NiceStateView.Builder,
-    adapter: RecyclerView.Adapter<VH>
+    private val realAdapter: RecyclerView.Adapter<VH>
 ) : RecyclerView.Adapter<ViewHolder>(), NiceStateView {
 
-    val realAdapter: RecyclerView.Adapter<VH> = adapter
-    var typeState = NiceStateView.STATE_CONTENT
+    var typeState = NiceStateView.STATE_NORMAL
 
     override fun getItemCount(): Int {
         return if (isTypeState) 1 else realAdapter.itemCount
@@ -227,7 +226,9 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     }
 
     override fun <T> showCustom(clazz: Class<T>): IStateView {
-        return getStateView(clazz.name)
+        typeState = clazz.name
+        notifyStateVH()
+        return getStateView(typeState)
     }
 
     private fun notifyStateVH() {
