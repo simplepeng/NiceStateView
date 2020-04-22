@@ -35,4 +35,7 @@ dependencies {
 
     implementation project(path: ':nice_state_view')
 //    implementation 'me.simple:nice-state-view:1.0.3'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
+    implementation 'me.drakeet.multitype:multitype:3.5.0'
 }

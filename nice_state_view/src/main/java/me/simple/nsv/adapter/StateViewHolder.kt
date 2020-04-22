@@ -1,10 +1,10 @@
 package me.simple.nsv.adapter
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-class StateViewHolder(itemView: View) : ViewHolder(itemView) {
+class StateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var typeSate = 0
         private set
 

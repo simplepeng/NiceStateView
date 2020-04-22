@@ -22,6 +22,7 @@ allprojects {
         google()
         jcenter()
 //        maven {url 'file:///Users/chenpeng/Desktop/Repositories/' }
+        maven { url "https://jitpack.io" }
     }
 }
 

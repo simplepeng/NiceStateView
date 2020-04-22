@@ -1,40 +1,36 @@
 package me.simple.nsv.adapter
 
 import android.database.Observable
-import android.util.SparseArray
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import me.simple.nsv.IStateView
 import java.util.*
 
 class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Adapter<VH>) :
     RecyclerView.Adapter<ViewHolder>() {
 
-    private val mRealAdapter: RecyclerView.Adapter<VH> = adapter
-    private var mTypeState = TYPE_STATE_NORMAL
-    private val mStateViewMap: SparseArray<IStateView> = SparseArray()
-    private val mViewClicks = SparseArray<View.OnClickListener>()
+    private val realAdapter: RecyclerView.Adapter<VH> = adapter
+    private var typeState = TYPE_STATE_NORMAL
+//    private val mStateViewMap: SparseArray<StateView> = SparseArray<StateView>()
+//    private val mViewClicks = SparseArray<View.OnClickListener>()
 
     override fun getItemCount(): Int {
         return if (isTypeState) {
             1
-        } else mRealAdapter.itemCount
+        } else realAdapter.itemCount
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0 && isTypeState) mTypeState else mRealAdapter.getItemViewType(
+        return if (position == 0 && isTypeState) typeState else realAdapter.getItemViewType(
             position
         )
     }
 
     override fun getItemId(position: Int): Long {
-        return if (position == 0 && isTypeState) super.getItemId(position) else mRealAdapter.getItemId(
+        return if (position == 0 && isTypeState) super.getItemId(position) else realAdapter.getItemId(
             position
         )
     }
@@ -43,79 +39,81 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
         viewGroup: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        if (isTypeState) {
-            val stateView: IStateView = getStateView(mTypeState)
-            val inflater =
-                LayoutInflater.from(viewGroup.context)
-            val stateItemView: View =
-                inflater.inflate(stateView.setLayoutRes(), viewGroup, false)
-            val stateViewHolder = StateViewHolder(stateItemView)
+//        if (isTypeState) {
+//            val stateView: StateView = getStateView(mTypeState)
+//            val inflater =
+//                LayoutInflater.from(viewGroup.context)
+//            val stateItemView: View =
+//                inflater.inflate(stateView.setLayoutRes(), viewGroup, false)
+//            val stateViewHolder = StateViewHolder(stateItemView)
 //            stateView.onCreate(stateItemView)
-            setClick(stateItemView, stateViewHolder)
-            return stateViewHolder
-        }
-        return mRealAdapter.onCreateViewHolder(viewGroup, viewType)
+//            setClick(stateItemView, stateViewHolder)
+//            return stateViewHolder
+//        }
+        return realAdapter.onCreateViewHolder(viewGroup, viewType)
     }
 
-    override fun onBindViewHolder(viewHolder: VH, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         onBindViewHolder(viewHolder, position, emptyList())
     }
 
     override fun onBindViewHolder(
-        viewHolder: VH,
+        viewHolder: ViewHolder,
         position: Int,
         payloads: List<Any>
     ) {
         if (viewHolder is StateViewHolder) {
             val holder = viewHolder
         } else {
-            mRealAdapter.onBindViewHolder(viewHolder, position, payloads)
+            realAdapter.onBindViewHolder(viewHolder as VH, position, payloads)
         }
     }
 
-    override fun onFailedToRecycleView(holder: VH): Boolean {
-        return if (holder is StateViewHolder) false else mRealAdapter.onFailedToRecycleView(holder)
+    override fun onFailedToRecycleView(holder: ViewHolder): Boolean {
+        return if (holder is StateViewHolder) false
+        else realAdapter.onFailedToRecycleView(holder as VH)
     }
 
     override fun onViewAttachedToWindow(holder: ViewHolder) {
-        if (holder is StateViewHolder) {
-            holder.setState(mTypeState)
-            getStateView(mTypeState).onAttach(holder.itemView)
-            return
-        }
-        mRealAdapter.onViewAttachedToWindow(holder)
+//        if (holder is StateViewHolder) {
+//            val stateViewHolder = holder
+//            stateViewHolder.setState(mTypeState)
+//            getStateView(mTypeState).onAttachedToWindow(stateViewHolder)
+//            return
+//        }
+        realAdapter.onViewAttachedToWindow(holder as VH)
     }
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         if (holder is StateViewHolder) {
             val stateViewHolder = holder
             val typeSate = stateViewHolder.typeSate
-            getStateView(typeSate).onDetach(stateViewHolder.itemView)
+//            getStateView(typeSate).onDetachedFromWindow(stateViewHolder)
             return
         }
-        mRealAdapter.onViewDetachedFromWindow(holder)
+        realAdapter.onViewDetachedFromWindow(holder as VH)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
         if (holder is StateViewHolder) return
-        mRealAdapter.onViewRecycled(holder)
+        realAdapter.onViewRecycled(holder as VH)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         setFullSpan(recyclerView)
         if (!isRegistered) {
-            mRealAdapter.registerAdapterDataObserver(mDataObserver)
+            realAdapter.registerAdapterDataObserver(mDataObserver)
         }
-        mRealAdapter.onAttachedToRecyclerView(recyclerView)
+        realAdapter.onAttachedToRecyclerView(recyclerView)
     }
 
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         if (isRegistered) {
-            mRealAdapter.unregisterAdapterDataObserver(mDataObserver)
+            realAdapter.unregisterAdapterDataObserver(mDataObserver)
         }
-        mRealAdapter.onDetachedFromRecyclerView(recyclerView)
+        realAdapter.onDetachedFromRecyclerView(recyclerView)
     }
 
     /**
@@ -146,7 +144,7 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
                 val field = clazz.getDeclaredField("mObservable")
                 field.isAccessible = true
                 val observable =
-                    field[mRealAdapter] as Observable<*>
+                    field[realAdapter] as Observable<*>
                 val observersField =
                     Observable::class.java.getDeclaredField("mObservers")
                 observersField.isAccessible = true
@@ -161,12 +159,12 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
 
     private val mDataObserver: AdapterDataObserver = object : AdapterDataObserver() {
         override fun onChanged() {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             notifyDataSetChanged()
         }
 
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             this@StateAdapter.notifyItemRangeChanged(positionStart, itemCount)
         }
 
@@ -175,17 +173,17 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
             itemCount: Int,
             payload: Any?
         ) {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             this@StateAdapter.notifyItemRangeChanged(positionStart, itemCount, payload)
         }
 
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             notifyItemRangeInserted(positionStart, itemCount)
         }
 
         override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             notifyItemRangeRemoved(positionStart, itemCount)
         }
 
@@ -194,7 +192,7 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
             toPosition: Int,
             itemCount: Int
         ) {
-            mTypeState = TYPE_STATE_CONTENT
+            typeState = TYPE_STATE_CONTENT
             this@StateAdapter.notifyItemRangeChanged(fromPosition, toPosition, itemCount)
         }
     }
@@ -215,14 +213,14 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
 //        return this
 //    }
 
-    private fun getStateView(type: Int): IStateView {
-        return mStateViewMap[type]
-            ?: throw NullPointerException(
-                "do you have register this type? type is" + getTypeName(
-                    mTypeState
-                )
-            )
-    }
+//    private fun getStateView(type: Int): StateView {
+//        return mStateViewMap[type]
+//            ?: throw NullPointerException(
+//                "do you have register this type? type is" + getTypeName(
+//                    mTypeState
+//                )
+//            )
+//    }
 
     private fun getTypeName(type: Int): String {
         var typeName = ""
@@ -236,27 +234,27 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
     }
 
     fun showLoading() {
-        mTypeState = TYPE_STATE_LOADING
+        typeState = TYPE_STATE_LOADING
         notifyStateVH()
     }
 
     fun showEmpty() {
-        mTypeState = TYPE_STATE_EMPTY
+        typeState = TYPE_STATE_EMPTY
         notifyStateVH()
     }
 
     fun showError() {
-        mTypeState = TYPE_STATE_ERROR
+        typeState = TYPE_STATE_ERROR
         notifyStateVH()
     }
 
     fun showRetry() {
-        mTypeState = TYPE_STATE_RETRY
+        typeState = TYPE_STATE_RETRY
         notifyStateVH()
     }
 
     fun showContent() {
-        mTypeState = TYPE_STATE_CONTENT
+        typeState = TYPE_STATE_CONTENT
         notifyDataSetChanged()
     }
 
@@ -265,32 +263,30 @@ class StateAdapter<VH : ViewHolder> private constructor(adapter: RecyclerView.Ad
     }
 
     private val isTypeState: Boolean
-        private get() = mTypeState == TYPE_STATE_LOADING
-                || mTypeState == TYPE_STATE_EMPTY
-                || mTypeState == TYPE_STATE_ERROR
-                || mTypeState == TYPE_STATE_RETRY
+        private get() = typeState == TYPE_STATE_LOADING || typeState == TYPE_STATE_EMPTY || typeState == TYPE_STATE_ERROR || typeState == TYPE_STATE_RETRY
 
-    private fun setClick(
-        itemView: View,
-        stateViewHolder: StateViewHolder
-    ) {
-        for (i in 0 until mViewClicks.size()) {
-            val viewId = mViewClicks.keyAt(i)
-            val clickListener = mViewClicks.valueAt(i)
-            val child = itemView.findViewById<View>(viewId)
-            child?.setOnClickListener(clickListener)
-        }
-    }
+//    private fun setClick(
+//        itemView: View,
+//        stateViewHolder: StateViewHolder
+//    ) {
+//        for (i in 0 until mViewClicks.size()) {
+//            val viewId = mViewClicks.keyAt(i)
+//            val clickListener = mViewClicks.valueAt(i)
+//            val child = itemView.findViewById<View>(viewId)
+//            child?.setOnClickListener(clickListener)
+//        }
+//    }
 
 //    fun setOnItemViewClickListener(
 //        viewId: Int,
 //        listener: View.OnClickListener
-//    ): StateAdapter<ViewHolder?> {
+//    ): StateAdapter {
 //        mViewClicks.put(viewId, listener)
 //        return this
 //    }
 
     companion object {
+
         const val TYPE_STATE_NORMAL = -111
         const val TYPE_STATE_LOADING = 111
         const val TYPE_STATE_EMPTY = 222
