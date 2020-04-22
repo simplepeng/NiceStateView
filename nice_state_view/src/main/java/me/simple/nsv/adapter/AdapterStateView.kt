@@ -36,20 +36,24 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     }
 
     override fun onCreateViewHolder(
-        viewGroup: ViewGroup,
+        parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
         if (isTypeState) {
             val stateView: IStateView = getStateView(typeState)
-            val inflater = LayoutInflater.from(viewGroup.context)
-            val stateItemView: View =
-                inflater.inflate(stateView.setLayoutRes(), viewGroup, false)
-            return StateViewHolder(stateItemView)
+            val itemView: View = LayoutInflater.from(parent.context)
+                .inflate(stateView.setLayoutRes(), parent, false)
+            val stateViewHolder = StateViewHolder(itemView)
+            stateViewHolder.setState(typeState)
+            return stateViewHolder
         }
-        return realAdapter.onCreateViewHolder(viewGroup, viewType)
+        return realAdapter.onCreateViewHolder(parent, viewType)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        viewHolder: ViewHolder,
+        position: Int
+    ) {
         onBindViewHolder(viewHolder, position, emptyList())
     }
 

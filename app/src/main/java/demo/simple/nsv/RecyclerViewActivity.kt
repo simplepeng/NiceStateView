@@ -41,8 +41,8 @@ class RecyclerViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recyclerview)
 
         recyclerView.run {
-//            layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
-            layoutManager = GridLayoutManager(this@RecyclerViewActivity, 2)
+            layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
+//            layoutManager = GridLayoutManager(this@RecyclerViewActivity, 2)
             adapter = niceStateView
         }
 
