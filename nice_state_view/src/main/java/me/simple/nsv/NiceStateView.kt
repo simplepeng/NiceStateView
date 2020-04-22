@@ -68,20 +68,20 @@ interface NiceStateView {
             return this
         }
 
-        fun wrapContent(view: View?): NiceStateView {
+        fun wrapContent(view: View?): LayoutStateView {
             if (view == null) {
                 throw NullPointerException("content view can not be null")
             }
             return LayoutStateView(this, view)
         }
 
-        fun wrapContent(activity: Activity): NiceStateView {
+        fun wrapContent(activity: Activity): LayoutStateView {
             val contentView =
                 (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
             return wrapContent(contentView)
         }
 
-        fun wrapContent(fragment: Fragment): NiceStateView {
+        fun wrapContent(fragment: Fragment): LayoutStateView {
             return wrapContent(fragment.view)
         }
 

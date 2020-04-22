@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.activity_recyclerview.*
-import me.drakeet.multitype.MultiTypeAdapter
 import me.simple.nsv.NiceStateView
-import me.simple.nsv.adapter.AdapterStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
 import me.simple.nsv.sample.NiceSampleErrorView
 import me.simple.nsv.sample.NiceSampleLoadingView
@@ -43,7 +40,7 @@ class RecyclerViewActivity : AppCompatActivity() {
         recyclerView.run {
             layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
 //            layoutManager = GridLayoutManager(this@RecyclerViewActivity, 2)
-            adapter = niceStateView
+            adapter = niceStateView.stateAdapter
         }
 
         btn_loading.setOnClickListener {
@@ -64,7 +61,7 @@ class RecyclerViewActivity : AppCompatActivity() {
 
         btn_content.setOnClickListener {
             initData()
-            niceStateView.showContent()
+//            niceStateView.showContent()
         }
 
         btn_custom.setOnClickListener {
