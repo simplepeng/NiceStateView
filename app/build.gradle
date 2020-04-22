@@ -38,4 +38,5 @@ dependencies {
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.47'
     implementation 'me.drakeet.multitype:multitype:3.5.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

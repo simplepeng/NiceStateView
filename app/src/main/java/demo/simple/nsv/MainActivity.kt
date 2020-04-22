@@ -1,9 +1,11 @@
 package demo.simple.nsv
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import me.simple.nsv.LayoutStateView
 import me.simple.nsv.NiceStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
 import me.simple.nsv.sample.NiceSampleErrorView
@@ -69,6 +71,10 @@ class MainActivity : AppCompatActivity() {
 
         btn_custom.setOnClickListener {
             niceStateView.showCustom(CustomLoginView::class.java)
+        }
+
+        btn_rv.setOnClickListener {
+            startActivity(Intent(this, RecyclerViewActivity::class.java))
         }
     }
 

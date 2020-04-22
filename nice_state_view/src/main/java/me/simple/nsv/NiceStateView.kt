@@ -1,116 +1,25 @@
 package me.simple.nsv
 
 import android.app.Activity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import me.simple.nsv.adapter.StateAdapter
+import me.simple.nsv.adapter.AdapterStateView
 
-class NiceStateView private constructor(
-    private var builder: Builder,
-    private var contentView: View
-) {
+interface NiceStateView {
 
-    private var curSateViewKey = STATE_CONTENT
-    private var parentViewGroup: ViewGroup? = contentView.parent as ViewGroup?
-    private val stateLayout = NiceStateLayout(contentView.context)
-    private val viewHolder = mutableMapOf<Int, View>()
+    fun showLoading(): IStateView
 
-    init {
-        if (parentViewGroup == null) {
-            throw NullPointerException("content view parent is null")
-        }
+    fun showEmpty(): IStateView
 
-        val parent = parentViewGroup!!
-        val index = parent.indexOfChild(contentView)
-        parent.removeView(contentView)
+    fun showError(): IStateView
 
-        val params = contentView.layoutParams
-        parent.addView(stateLayout, index, params)
+    fun showRetry(): IStateView
 
-        stateLayout.setContentView(contentView)
-    }
+    fun showContent()
 
-    fun showLoading(): IStateView {
-        return showStateView(STATE_LOADING)
-    }
-
-    fun showEmpty(): IStateView {
-        return showStateView(STATE_EMPTY)
-    }
-
-    fun showError(): IStateView {
-        return showStateView(STATE_ERROR)
-    }
-
-    fun showRetry(): IStateView {
-        return showStateView(STATE_RETRY)
-    }
-
-    fun showContent() {
-        innerShowContentView()
-    }
-
-    fun <T> showCustom(clazz: Class<T>): IStateView {
-        return showStateView(clazz.name)
-    }
-
-    private fun showStateView(
-        key: String
-    ): IStateView {
-        if (curSateViewKey == key) return getStateView(curSateViewKey)!!
-
-        //detach last view
-        val lastIStateView = getStateView(curSateViewKey)
-        if (lastIStateView != null) {
-            val lastView = viewHolder[lastIStateView.setLayoutRes()]
-            if (lastView != null) {
-                lastIStateView.onDetach(lastView)
-                stateLayout.detachView(lastView)
-            }
-        }
-
-        //attach current view
-        val curIStateView =
-            getStateView(key) ?: throw NullPointerException("do you have register $key ?")
-
-        var curView: View? = viewHolder[curIStateView.setLayoutRes()]
-        if (curView == null) {
-            curView = LayoutInflater.from(contentView.context)
-                .inflate(curIStateView.setLayoutRes(), stateLayout, false)
-            viewHolder[curIStateView.setLayoutRes()] = curView
-        }
-
-        contentView.visibility = View.GONE
-        stateLayout.attachView(curView!!)
-        curIStateView.onAttach(curView)
-
-        curSateViewKey = key
-        return curIStateView
-    }
-
-    private fun innerShowContentView() {
-        if (curSateViewKey == STATE_CONTENT) return
-
-        val curStateView = getStateView(curSateViewKey)
-        if (curStateView != null) {
-            val detachView = viewHolder[curStateView.setLayoutRes()]
-            if (detachView != null) {
-                curStateView.onDetach(detachView)
-            }
-        }
-
-        contentView.visibility = View.VISIBLE
-        stateLayout.showContentView()
-        curSateViewKey = STATE_CONTENT
-    }
-
-    private fun getStateView(key: String): IStateView? {
-        return builder.stateViewMap[key]
-    }
+    fun <T> showCustom(clazz: Class<T>): IStateView
 
     companion object {
 
@@ -128,9 +37,6 @@ class NiceStateView private constructor(
         }
     }
 
-    /**
-     *
-     */
     class Builder {
 
         val stateViewMap = mutableMapOf<String, IStateView>()
@@ -164,7 +70,7 @@ class NiceStateView private constructor(
             if (view == null) {
                 throw NullPointerException("content view can not be null")
             }
-            return NiceStateView(this, view)
+            return LayoutStateView(this, view)
         }
 
         fun wrapContent(activity: Activity): NiceStateView {
@@ -177,9 +83,8 @@ class NiceStateView private constructor(
             return wrapContent(fragment.view)
         }
 
-        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>) {
-            StateAdapter.wrap(adapter)
+        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>): NiceStateView {
+            return AdapterStateView(this, adapter)
         }
     }
-
 }
