@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.activity_recyclerview.*
 import me.drakeet.multitype.MultiTypeAdapter
 import me.simple.nsv.NiceStateView
+import me.simple.nsv.adapter.AdapterStateView
 import me.simple.nsv.sample.NiceSampleEmptyView
 import me.simple.nsv.sample.NiceSampleErrorView
 import me.simple.nsv.sample.NiceSampleLoadingView
@@ -24,12 +25,13 @@ class RecyclerViewActivity : AppCompatActivity() {
     //    private val mAdapter = MultiTypeAdapter(mItems)
     private val mAdapter = RealAdapter(mItems)
 
-    private val niceStateView: NiceStateView by lazy {
+    private val niceStateView by lazy {
         NiceStateView.newBuilder()
             .registerLoading(NiceSampleLoadingView())
             .registerEmpty(NiceSampleEmptyView())
             .registerError(NiceSampleErrorView())
             .registerRetry(NiceSampleRetryView())
+            .registerCustom(CustomLoginView())
             .wrapContent(mAdapter)
     }
 
@@ -39,13 +41,46 @@ class RecyclerViewActivity : AppCompatActivity() {
 
         recyclerView.run {
             layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
-            adapter = mAdapter
+            adapter = niceStateView
         }
 
+        btn_loading.setOnClickListener {
+            niceStateView.showLoading()
+            recyclerView.postDelayed({
+                initData()
+            },2000)
+        }
+
+        btn_empty.setOnClickListener {
+            niceStateView.showEmpty()
+        }
+
+        btn_error.setOnClickListener {
+            niceStateView.showError()
+        }
+
+        btn_retry.setOnClickListener {
+            niceStateView.showRetry()
+        }
+
+        btn_content.setOnClickListener {
+            niceStateView.showContent()
+        }
+
+        btn_custom.setOnClickListener {
+            niceStateView.showCustom(CustomLoginView::class.java)
+        }
+
+       btn_loading.performClick()
+    }
+
+    private fun initData(){
+        mItems.clear()
         for (i in 0..40) {
             mItems.add(i.toString())
         }
         mAdapter.notifyDataSetChanged()
+//        niceStateView.showContent()
     }
 }
 

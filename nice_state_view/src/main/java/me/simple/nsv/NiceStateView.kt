@@ -83,7 +83,7 @@ interface NiceStateView {
             return wrapContent(fragment.view)
         }
 
-        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>): NiceStateView {
+        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>): AdapterStateView<VH> {
             return AdapterStateView(this, adapter)
         }
     }

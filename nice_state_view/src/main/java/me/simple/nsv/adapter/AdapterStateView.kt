@@ -13,20 +13,17 @@ import me.simple.nsv.IStateView
 import me.simple.nsv.NiceStateView
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 class AdapterStateView<VH : ViewHolder> internal constructor(
     private var builder: NiceStateView.Builder,
     adapter: RecyclerView.Adapter<VH>
 ) : RecyclerView.Adapter<ViewHolder>(), NiceStateView {
 
-    private val realAdapter: RecyclerView.Adapter<VH> = adapter
-    private var typeState = NiceStateView.STATE_CONTENT
-//    private val mStateViewMap: SparseArray<StateView> = SparseArray<StateView>()
-//    private val mViewClicks = SparseArray<View.OnClickListener>()
+    val realAdapter: RecyclerView.Adapter<VH> = adapter
+    var typeState = NiceStateView.STATE_CONTENT
 
     override fun getItemCount(): Int {
-        return if (isTypeState) {
-            1
-        } else realAdapter.itemCount
+        return if (isTypeState) 1 else realAdapter.itemCount
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -35,9 +32,8 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     }
 
     override fun getItemId(position: Int): Long {
-        return if (position == 0 && isTypeState) super.getItemId(position) else realAdapter.getItemId(
-            position
-        )
+        return if (position == 0 && isTypeState) super.getItemId(position)
+        else realAdapter.getItemId(position)
     }
 
     override fun onCreateViewHolder(
@@ -46,14 +42,10 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     ): ViewHolder {
         if (isTypeState) {
             val stateView: IStateView = getStateView(typeState)
-            val inflater =
-                LayoutInflater.from(viewGroup.context)
+            val inflater = LayoutInflater.from(viewGroup.context)
             val stateItemView: View =
                 inflater.inflate(stateView.setLayoutRes(), viewGroup, false)
-            val stateViewHolder = StateViewHolder(stateItemView)
-//            stateView.onCreate(stateItemView)
-//            setClick(stateItemView, stateViewHolder)
-            return stateViewHolder
+            return StateViewHolder(stateItemView)
         }
         return realAdapter.onCreateViewHolder(viewGroup, viewType)
     }
@@ -73,6 +65,7 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
             realAdapter.onBindViewHolder(viewHolder as VH, position, payloads)
         }
     }
+
 
     override fun onFailedToRecycleView(holder: ViewHolder): Boolean {
         return if (holder is StateViewHolder) false
@@ -125,11 +118,10 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     private fun setFullSpan(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager ?: return
         if (layoutManager is GridLayoutManager) {
-            val gm = layoutManager
-            gm.spanSizeLookup = object : SpanSizeLookup() {
+            layoutManager.spanSizeLookup = object : SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     val viewType = getItemViewType(position)
-                    return if (isTypeState) gm.spanCount else 1
+                    return if (isTypeState) layoutManager.spanCount else 1
                 }
             }
         }
@@ -235,7 +227,7 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     }
 
     override fun <T> showCustom(clazz: Class<T>): IStateView {
-        return getStateView(typeState)
+        return getStateView(clazz.name)
     }
 
     private fun notifyStateVH() {
@@ -243,7 +235,7 @@ class AdapterStateView<VH : ViewHolder> internal constructor(
     }
 
     private val isTypeState: Boolean
-    get() = builder.stateViewMap.containsKey(typeState)
+        get() = builder.stateViewMap.containsKey(typeState)
 //        get() = typeState == TYPE_STATE_LOADING
 //                || typeState == TYPE_STATE_EMPTY
 //                || typeState == TYPE_STATE_ERROR

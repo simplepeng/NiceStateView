@@ -1,0 +1,2 @@
+-keep class androidx.recyclerview.widget.**{*;}
+-keep class me.simple.nvs.**{*;}
