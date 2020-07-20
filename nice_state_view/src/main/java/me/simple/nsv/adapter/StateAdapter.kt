@@ -1,6 +1,7 @@
 package me.simple.nsv.adapter
 
 import android.database.Observable
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,9 @@ class StateAdapter<VH : ViewHolder> internal constructor(
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     var typeState = NiceStateView.STATE_NORMAL
+
+    private val mViewClicks: SparseArray<View.OnClickListener> = SparseArray()
+
 
     override fun getItemCount(): Int {
         return if (isTypeState) 1 else realAdapter.itemCount
@@ -44,6 +48,9 @@ class StateAdapter<VH : ViewHolder> internal constructor(
             val itemView: View = LayoutInflater.from(parent.context)
                 .inflate(stateView.setLayoutRes(), parent, false)
             val stateViewHolder = StateViewHolder(itemView)
+
+            setClick(itemView, stateViewHolder)
+
             stateViewHolder.setState(typeState)
             return stateViewHolder
         }
@@ -242,4 +249,23 @@ class StateAdapter<VH : ViewHolder> internal constructor(
     private val isTypeState: Boolean
         get() = builder.stateViewMap.containsKey(typeState)
 
+    private fun setClick(
+        itemView: View,
+        stateViewHolder: StateViewHolder
+    ) {
+        for (i in 0 until mViewClicks.size()) {
+            val viewId = mViewClicks.keyAt(i)
+            val clickListener = mViewClicks.valueAt(i)
+            val child = itemView.findViewById<View>(viewId)
+            child?.setOnClickListener(clickListener)
+        }
+    }
+
+    fun setOnItemViewClickListener(
+        viewId: Int,
+        listener: View.OnClickListener?
+    ): StateAdapter<*>? {
+        mViewClicks.put(viewId, listener)
+        return this
+    }
 }
