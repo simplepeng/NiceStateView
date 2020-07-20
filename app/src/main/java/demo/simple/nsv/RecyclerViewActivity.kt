@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.activity_recyclerview.*
 import me.simple.nsv.NiceStateView
-import me.simple.nsv.sample.NiceSampleEmptyView
-import me.simple.nsv.sample.NiceSampleErrorView
-import me.simple.nsv.sample.NiceSampleLoadingView
-import me.simple.nsv.sample.NiceSampleRetryView
+import me.simple.nsv.sample.NiceEmptyView
+import me.simple.nsv.sample.NiceErrorView
+import me.simple.nsv.sample.NiceLoadingView
+import me.simple.nsv.sample.NiceRetryView
 
 class RecyclerViewActivity : AppCompatActivity() {
 
@@ -25,10 +25,10 @@ class RecyclerViewActivity : AppCompatActivity() {
 
     private val niceStateView by lazy {
         NiceStateView.newBuilder()
-            .registerLoading(NiceSampleLoadingView())
-            .registerEmpty(NiceSampleEmptyView())
-            .registerError(NiceSampleErrorView())
-            .registerRetry(NiceSampleRetryView())
+            .registerLoading(NiceLoadingView())
+            .registerEmpty(NiceEmptyView())
+            .registerError(NiceErrorView())
+            .registerRetry(NiceRetryView())
             .registerCustom(CustomLoginView())
             .wrapContent(mAdapter)
     }

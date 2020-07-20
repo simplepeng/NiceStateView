@@ -6,19 +6,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.simple.nsv.NiceStateView
-import me.simple.nsv.sample.NiceSampleEmptyView
-import me.simple.nsv.sample.NiceSampleErrorView
-import me.simple.nsv.sample.NiceSampleLoadingView
-import me.simple.nsv.sample.NiceSampleRetryView
+import me.simple.nsv.sample.NiceEmptyView
+import me.simple.nsv.sample.NiceErrorView
+import me.simple.nsv.sample.NiceLoadingView
+import me.simple.nsv.sample.NiceRetryView
 
 class MainActivity : AppCompatActivity() {
 
     private val niceStateView: NiceStateView by lazy {
         NiceStateView.newBuilder()
-            .registerLoading(NiceSampleLoadingView())
-            .registerEmpty(NiceSampleEmptyView())
-            .registerError(NiceSampleErrorView())
-            .registerRetry(NiceSampleRetryView())
+            .registerLoading(NiceLoadingView())
+            .registerEmpty(NiceEmptyView())
+            .registerError(NiceErrorView())
+            .registerRetry(NiceRetryView())
             .registerCustom(CustomLoginView())
             .wrapContent(view_content)
     }
@@ -38,9 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_empty.setOnClickListener {
-            niceStateView.showEmpty().setOnViewClickListener(R.id.iv_empty) {
-                toast("showEmpty")
-            }
+            niceStateView.showEmpty()
 
 //            niceStateView.showEmpty()
 //                .setText(R.id.tv_empty, "这里空空如也~")
@@ -48,13 +46,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_error.setOnClickListener {
-            niceStateView.showError().setOnViewClickListener(R.id.iv_error) {
-                toast("showError")
-            }
+            niceStateView.showError()
         }
 
         btn_retry.setOnClickListener {
-            niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
+            niceStateView.showRetry().setOnViewClickListener(R.id.nsvIvRetry) {
                 niceStateView.showLoading()
                 view_content.postDelayed({
                     niceStateView.showContent()

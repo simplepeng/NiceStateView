@@ -10,7 +10,6 @@ internal class NsvLog {
         private const val DEBUG = false
 
         fun d(msg: String) {
-            if (!DEBUG) return
             Log.d(TAG, msg)
         }
     }

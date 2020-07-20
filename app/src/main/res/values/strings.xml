@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NiceStateView</string>
+    <string name="app_empty">这里什么都没有</string>
 </resources>
