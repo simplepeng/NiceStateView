@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import me.simple.nsv.adapter.AdapterStateView
+import me.simple.nsv.sample.NiceWrapperView
 import me.simple.nsv.view.LayoutStateView
 
 interface NiceStateView {
@@ -43,6 +44,9 @@ interface NiceStateView {
 
         val stateViewMap = mutableMapOf<String, IStateView>()
 
+        /**
+         * 注册IStateView，可以回调onAttach，onDetach函数
+         */
         fun registerEmpty(stateView: IStateView): Builder {
             stateViewMap[STATE_EMPTY] = stateView
             return this
@@ -68,6 +72,38 @@ interface NiceStateView {
             return this
         }
 
+        /**
+         * 直接注册layoutRes
+         */
+        fun registerEmpty(layoutRes: Int): Builder {
+            stateViewMap[STATE_EMPTY] = NiceWrapperView(layoutRes)
+            return this
+        }
+
+        fun registerError(layoutRes: Int): Builder {
+            stateViewMap[STATE_ERROR] = NiceWrapperView(layoutRes)
+            return this
+        }
+
+        fun registerRetry(layoutRes: Int): Builder {
+            stateViewMap[STATE_RETRY] = NiceWrapperView(layoutRes)
+            return this
+        }
+
+        fun registerLoading(layoutRes: Int): Builder {
+            stateViewMap[STATE_LOADING] = NiceWrapperView(layoutRes)
+            return this
+        }
+
+        fun registerCustom(layoutRes: Int): Builder {
+            val stateView = NiceWrapperView(layoutRes)
+            stateViewMap[stateView.javaClass.name] = stateView
+            return this
+        }
+
+        /**
+         * 包装content View
+         */
         fun wrapContent(view: View?): LayoutStateView {
             if (view == null) {
                 throw NullPointerException("content view can not be null")
@@ -75,15 +111,21 @@ interface NiceStateView {
             return LayoutStateView(this, view)
         }
 
+        /**
+         * 包装Activity的content View
+         */
         fun wrapContent(activity: Activity): LayoutStateView {
             val contentView =
-                (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+                    (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
             return wrapContent(contentView)
         }
 
-        fun wrapContent(fragment: Fragment): LayoutStateView {
-            return wrapContent(fragment.view)
-        }
+        /**
+         * Fragment的View没有parent
+         */
+//        fun wrapContent(fragment: Fragment): LayoutStateView {
+//            return wrapContent(fragment.view)
+//        }
 
         fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>): AdapterStateView<VH> {
             return AdapterStateView(this, adapter)

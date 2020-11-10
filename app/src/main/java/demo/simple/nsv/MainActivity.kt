@@ -13,13 +13,23 @@ import me.simple.nsv.sample.NiceRetryView
 
 class MainActivity : AppCompatActivity() {
 
+//    private val niceStateView: NiceStateView by lazy {
+//        NiceStateView.newBuilder()
+//            .registerLoading(NiceLoadingView())
+//            .registerEmpty(NiceEmptyView())
+//            .registerError(NiceErrorView())
+//            .registerRetry(NiceRetryView())
+//            .registerCustom(CustomLoginView())
+//            .wrapContent(view_content)
+//    }
+
     private val niceStateView: NiceStateView by lazy {
         NiceStateView.newBuilder()
-            .registerLoading(NiceLoadingView())
-            .registerEmpty(NiceEmptyView())
-            .registerError(NiceErrorView())
-            .registerRetry(NiceRetryView())
-            .registerCustom(CustomLoginView())
+            .registerLoading(R.layout.sample_loading_view)
+            .registerEmpty(R.layout.sample_empty_view)
+            .registerError(R.layout.sample_error_view)
+            .registerRetry(R.layout.sample_retry_view)
+            .registerCustom(R.layout.layout_login)
             .wrapContent(view_content)
     }
 
