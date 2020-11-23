@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 //            .registerEmpty(NiceEmptyView())
 //            .registerError(NiceErrorView())
 //            .registerRetry(NiceRetryView())
-//            .registerCustom(CustomLoginView())
 //            .wrapContent(view_content)
 //    }
 

@@ -17,7 +17,7 @@ implementation 'me.simple:nice-state-view:1.0.4'
 ## 使用默认样式
 
 ```kotlin
-//初始化注册不同的状态布局
+		//初始化注册不同的状态布局
     private val niceStateView: NiceStateView by lazy {
         NiceStateView.newBuilder()
             .registerLoading(R.layout.sample_loading_view)
@@ -28,13 +28,13 @@ implementation 'me.simple:nice-state-view:1.0.4'
             .wrapContent(view_content)
     }
 ...
-//切换状态布局
-niceStateView.showLoading()
-niceStateView.showEmpty()
-niceStateView.showError()
-niceStateView.showRetry()
-niceStateView.showContent()
-niceStateView.showCustom(key:String)
+	//切换状态布局
+	niceStateView.showLoading()
+	niceStateView.showEmpty()
+	niceStateView.showError()
+	niceStateView.showRetry()
+	niceStateView.showContent()
+	niceStateView.showCustom(key:String)
 ```
 
 ## 设置点击事件
@@ -56,9 +56,9 @@ niceStateView.showEmpty()
                 .setImage(R.id.iv_empty, R.drawable.nsv_empty)
 ```
 
-## 自定义样式
+## 自定义
 
-继承`IStateView`类，重写需要用到的方法。
+继承`IStateView`类，重写需要用到的方法。可以在`onAttch`或`onDetch`方法中`初始化资源`或者`释放资源`
 
 ```kotlin
 class NiceSampleLoadingView : IStateView() {
@@ -85,6 +85,17 @@ class NiceSampleLoadingView : IStateView() {
     }
 
 }
+```
+
+```kotlin
+    private val niceStateView: NiceStateView by lazy {
+        NiceStateView.newBuilder()
+            .registerLoading(NiceLoadingView())
+            .registerEmpty(NiceEmptyView())
+            .registerError(NiceErrorView())
+            .registerRetry(NiceRetryView())
+            .wrapContent(view_content)
+    }
 ```
 
 ## 注册自定义的Type
