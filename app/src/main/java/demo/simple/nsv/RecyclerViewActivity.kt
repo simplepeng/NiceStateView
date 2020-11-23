@@ -25,12 +25,12 @@ class RecyclerViewActivity : AppCompatActivity() {
 
     private val niceStateView by lazy {
         NiceStateView.newBuilder()
-                .registerLoading(NiceLoadingView())
-                .registerEmpty(NiceEmptyView())
-                .registerError(NiceErrorView())
-                .registerRetry(NiceRetryView())
-                .registerCustom(CustomLoginView())
-                .wrapContent(mAdapter)
+            .registerLoading(NiceLoadingView())
+            .registerEmpty(NiceEmptyView())
+            .registerError(NiceErrorView())
+            .registerRetry(NiceRetryView())
+            .registerCustom(CustomLoginView())
+            .wrapContent(mAdapter)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +38,10 @@ class RecyclerViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recyclerview)
 
         niceStateView.stateAdapter.setOnItemViewClickListener(
-                R.id.nsvIvRetry,
-                View.OnClickListener {
-                    niceStateView.showLoading()
-                })
+            R.id.nsvIvRetry,
+            View.OnClickListener {
+                niceStateView.showLoading()
+            })
 
         recyclerView.run {
             layoutManager = LinearLayoutManager(this@RecyclerViewActivity)
@@ -90,8 +90,8 @@ class RecyclerViewActivity : AppCompatActivity() {
 internal class RealAdapter(private val items: MutableList<String>) : RecyclerView.Adapter<VH>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return VH(
-                LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_layout, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_layout, parent, false)
         )
     }
 

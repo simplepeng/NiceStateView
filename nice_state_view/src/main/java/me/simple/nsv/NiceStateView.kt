@@ -3,7 +3,6 @@ package me.simple.nsv
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import me.simple.nsv.adapter.AdapterStateView
 import me.simple.nsv.sample.NiceWrapperView
