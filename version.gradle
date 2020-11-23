@@ -7,5 +7,5 @@ ext {
 
     groupId = "me.simple"
     artifactId = "nice-state-view"
-    publishVersion = "1.0.3"
+    publishVersion = "1.0.4"
 }
