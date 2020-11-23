@@ -17,7 +17,7 @@ implementation 'me.simple:nice-state-view:1.0.4'
 ## 使用默认样式
 
 ```kotlin
-		//初始化注册不同的状态布局
+	//初始化注册不同的状态布局
     private val niceStateView: NiceStateView by lazy {
         NiceStateView.newBuilder()
             .registerLoading(R.layout.sample_loading_view)
@@ -52,8 +52,8 @@ niceStateView.showRetry().setOnViewClickListener(R.id.iv_retry) {
 ```kotlin
 //所以在showLoading()，showEmpty()，showError()，showRetry()后都可以重设样式
 niceStateView.showEmpty()
-                .setText(R.id.tv_empty, "这里空空如也~")
-                .setImage(R.id.iv_empty, R.drawable.nsv_empty)
+             .setText(R.id.tv_empty, "这里空空如也~")
+             .setImage(R.id.iv_empty, R.drawable.nsv_empty)
 ```
 
 ## 自定义
@@ -61,7 +61,7 @@ niceStateView.showEmpty()
 继承`IStateView`类，重写需要用到的方法。可以在`onAttch`或`onDetch`方法中`初始化资源`或者`释放资源`
 
 ```kotlin
-class NiceSampleLoadingView : IStateView() {
+class NiceLoadingView : IStateView() {
 
     /**
      * 设置填充的布局文件
@@ -83,7 +83,6 @@ class NiceSampleLoadingView : IStateView() {
         super.onDetach(view)
 
     }
-
 }
 ```
 
@@ -119,8 +118,6 @@ niceStateView.showCustom(key:String)
 **[扶贫方式](https://simplepeng.github.io/merge_pay_code/)**
 
 ## 问题反馈Q群：1078185041
-
-<img src="https://raw.githubusercontent.com/simplepeng/ImageRepo/master/q_group.jpg" width="270px" height="370px">
 
 ## 版本迭代
 
