@@ -77,10 +77,6 @@ class MainActivity : AppCompatActivity() {
         btn_custom.setOnClickListener {
             niceStateView.showCustom(CustomLoginView::class.java)
         }
-
-        btn_rv.setOnClickListener {
-            startActivity(Intent(this, RecyclerViewActivity::class.java))
-        }
     }
 
     private fun toast(text: String) {

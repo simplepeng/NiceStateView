@@ -3,8 +3,6 @@ package me.simple.nsv
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import me.simple.nsv.adapter.AdapterStateView
 import me.simple.nsv.sample.NiceWrapperView
 import me.simple.nsv.view.LayoutStateView
 
@@ -126,8 +124,5 @@ interface NiceStateView {
 //            return wrapContent(fragment.view)
 //        }
 
-        fun <VH : RecyclerView.ViewHolder> wrapContent(adapter: RecyclerView.Adapter<VH>): AdapterStateView<VH> {
-            return AdapterStateView(this, adapter)
-        }
     }
 }

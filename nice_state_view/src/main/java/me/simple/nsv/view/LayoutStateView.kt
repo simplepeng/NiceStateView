@@ -11,11 +11,9 @@ class LayoutStateView internal constructor(
     private var contentView: View
 ) : NiceStateView {
 
-    private var curSateViewKey =
-        NiceStateView.STATE_CONTENT
+    private var curSateViewKey =NiceStateView.STATE_CONTENT
     private var parentViewGroup: ViewGroup? = contentView.parent as ViewGroup?
-    private val stateLayout =
-        NiceStateLayout(contentView.context)
+    private val stateLayout =NiceStateLayout(contentView.context)
     private val viewHolder = mutableMapOf<Int, View>()
 
     init {
