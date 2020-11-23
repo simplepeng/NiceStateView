@@ -1,6 +1,8 @@
 package me.simple.nsv
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 
 abstract class IStateView {
@@ -36,4 +38,15 @@ abstract class IStateView {
         return this
     }
 
+    fun setText(id: Int, text: String) {
+        view?.findViewById<TextView>(id)?.text = text
+    }
+
+    fun setText(id: Int, resId: Int) {
+        view?.findViewById<TextView>(id)?.setText(resId)
+    }
+
+    fun setImage(id: Int, resId: Int) {
+        view?.findViewById<ImageView>(id)?.setImageResource(resId)
+    }
 }

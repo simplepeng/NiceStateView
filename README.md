@@ -8,20 +8,6 @@
 | ------- | ----- | ----- | ----- |
 | ![](images/img_loading.png) | ![](images/img_empty.png) | ![](images/img_error.png) | ![](images/img_retry.png) |
 
-## 为什么重新造这样一个轮子
-
-gayhub上确实没找到一个适合自己的轮子😢。适合自己的轮子才是好轮子-by 鲁迅
-
-找到的大多数的轮子要么都是将状态页面全部加载出来，然后`visible`，`gone`布局达到状态布局切换的效果。这样做会导致明明已经显示了`content`布局，但其实其他状态布局并没有释放，造成了内存浪费。像用到了一些大的Gif，或者lottie这种库，造成的内存压力可想而知。
-
-要么就是直接`removeView`，`addView`切换布局，这样导致一些特殊的`动画`得不到及时的释放，最后造成`内存泄露`
-
-或者不能`随意插拔替换状态布局`，要知道一个App中可能某些页面的状态布局一些一样的，而有些是不一样的（比如订单页面的空布局和好友列表的空布局）。
-
-但是这个库也有个缺点：那就是会多增加一层`StateLayout`布局做代理布局，但是其实对布局渲染速率没有多大影响。（想想原来没有`ConstraintLayout`的时候，你嵌套了多少层布局 😈）
-
-如果你只在`Recyclerview`中切换状态布局，也可以试试作者的另外一个库：[StateAdapter](https://github.com/simplepeng/StateAdapter) 😁
-
 ## 导入依赖
 
 ```groovy
