@@ -51,8 +51,8 @@ class LayoutStateView internal constructor(
         innerShowContentView()
     }
 
-    override fun <T> showCustom(clazz: Class<T>): IStateView {
-        return showStateView(clazz.name)
+    override fun  showCustom(key: String): IStateView {
+        return showStateView(key)
     }
 
     private fun showStateView(

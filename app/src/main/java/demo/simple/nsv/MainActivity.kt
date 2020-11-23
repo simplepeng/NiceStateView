@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             .registerEmpty(R.layout.sample_empty_view)
             .registerError(R.layout.sample_error_view)
             .registerRetry(R.layout.sample_retry_view)
-            .registerCustom(R.layout.layout_login)
+            .registerCustom("login", R.layout.layout_login)
             .wrapContent(view_content)
     }
 
@@ -48,11 +48,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_empty.setOnClickListener {
-            niceStateView.showEmpty()
-
 //            niceStateView.showEmpty()
-//                .setText(R.id.tv_empty, "这里空空如也~")
-//                .setImage(R.id.iv_empty, R.drawable.nsv_empty)
+
+            niceStateView.showEmpty()
+                .setText(R.id.nsvTvEmpty, "这里空空如也~")
+                .setImage(R.id.nsvIvEmpty, R.drawable.nsv_empty)
         }
 
         btn_error.setOnClickListener {
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_custom.setOnClickListener {
-            niceStateView.showCustom(CustomLoginView::class.java)
+            niceStateView.showCustom("login")
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import me.simple.nsv.sample.NiceWrapperView
 import me.simple.nsv.view.LayoutStateView
+import java.lang.IllegalArgumentException
 
 interface NiceStateView {
 
@@ -18,7 +19,7 @@ interface NiceStateView {
 
     fun showContent()
 
-    fun <T> showCustom(clazz: Class<T>): IStateView
+    fun showCustom(key: String): IStateView
 
     companion object {
 
@@ -64,8 +65,12 @@ interface NiceStateView {
             return this
         }
 
-        fun registerCustom(stateView: IStateView): Builder {
-            stateViewMap[stateView.javaClass.name] = stateView
+        fun registerCustom(key: String, stateView: IStateView): Builder {
+            if (stateViewMap.containsKey(key)) {
+                throw IllegalArgumentException("don't use $key")
+            }
+
+            stateViewMap[key] = stateView
             return this
         }
 
@@ -92,9 +97,9 @@ interface NiceStateView {
             return this
         }
 
-        fun registerCustom(layoutRes: Int): Builder {
+        fun registerCustom(key: String, layoutRes: Int): Builder {
             val stateView = NiceWrapperView(layoutRes)
-            stateViewMap[stateView.javaClass.name] = stateView
+            stateViewMap[key] = stateView
             return this
         }
 
@@ -113,7 +118,7 @@ interface NiceStateView {
          */
         fun wrapContent(activity: Activity): LayoutStateView {
             val contentView =
-                    (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+                (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
             return wrapContent(contentView)
         }
 

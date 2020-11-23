@@ -38,15 +38,18 @@ abstract class IStateView {
         return this
     }
 
-    fun setText(id: Int, text: String) {
+    fun setText(id: Int, text: String): IStateView {
         view?.findViewById<TextView>(id)?.text = text
+        return this
     }
 
-    fun setText(id: Int, resId: Int) {
+    fun setText(id: Int, resId: Int): IStateView {
         view?.findViewById<TextView>(id)?.setText(resId)
+        return this
     }
 
-    fun setImage(id: Int, resId: Int) {
+    fun setImage(id: Int, resId: Int): IStateView {
         view?.findViewById<ImageView>(id)?.setImageResource(resId)
+        return this
     }
 }
