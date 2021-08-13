@@ -1,6 +1,6 @@
 # **[NiceStateView](https://github.com/simplepeng/NiceStateView)**
 
-![MIT](https://img.shields.io/badge/License-MIT-orange?style=flat-square)  ![Jcenter](https://img.shields.io/badge/Jcenter-1.0.4-brightgreen?style=flat-square)  ![Androidx](https://img.shields.io/badge/Androidx-Yes-blue?style=flat-square)  ![Api](https://img.shields.io/badge/Api-14+-blueviolet?style=flat-square)  ![Kotlin](https://img.shields.io/badge/Kotlin-Yes-ff6984?style=flat-square)
+![MIT](https://img.shields.io/badge/License-MIT-orange?style=flat-square)  [![](https://jitpack.io/v/simplepeng/NiceStateView.svg)](https://jitpack.io/#simplepeng/NiceStateView)  ![Androidx](https://img.shields.io/badge/Androidx-Yes-blue?style=flat-square)  ![Api](https://img.shields.io/badge/Api-14+-blueviolet?style=flat-square)  ![Kotlin](https://img.shields.io/badge/Kotlin-Yes-ff6984?style=flat-square)
 
 一个超赞的页面状态切换库（加载中，空布局，网络错误，重试，自定义类型）
 
@@ -11,30 +11,33 @@
 ## 导入依赖
 
 ```groovy
-implementation 'me.simple:nice-state-view:1.0.4'
+maven { url 'https://jitpack.io' }
+```
+
+```groovy
+implementation 'com.github.simplepeng:NiceStateView:v1.0.5'
 ```
 
 ## 使用默认样式
 
 ```kotlin
-	//初始化注册不同的状态布局
-    private val niceStateView: NiceStateView by lazy {
-        NiceStateView.newBuilder()
-            .registerLoading(R.layout.sample_loading_view)
-            .registerEmpty(R.layout.sample_empty_view)
-            .registerError(R.layout.sample_error_view)
-            .registerRetry(R.layout.sample_retry_view)
-            .registerCustom("login", R.layout.layout_login)
-            .wrapContent(view_content)
-    }
-...
-	//切换状态布局
-	niceStateView.showLoading()
-	niceStateView.showEmpty()
-	niceStateView.showError()
-	niceStateView.showRetry()
-	niceStateView.showContent()
-	niceStateView.showCustom(key:String)
+//初始化注册不同的状态布局
+  private val niceStateView: NiceStateView by lazy {
+      NiceStateView.newBuilder()
+          .registerLoading(R.layout.sample_loading_view)
+          .registerEmpty(R.layout.sample_empty_view)
+          .registerError(R.layout.sample_error_view)
+          .registerRetry(R.layout.sample_retry_view)
+          .registerCustom("login", R.layout.layout_login)
+          .wrapContent(view_content)
+}
+//切换状态布局
+niceStateView.showLoading()
+niceStateView.showEmpty()
+niceStateView.showError()
+niceStateView.showRetry()
+niceStateView.showContent()
+niceStateView.showCustom(key:String)
 ```
 
 ## 设置点击事件
@@ -87,14 +90,14 @@ class NiceLoadingView : IStateView() {
 ```
 
 ```kotlin
-    private val niceStateView: NiceStateView by lazy {
-        NiceStateView.newBuilder()
-            .registerLoading(NiceLoadingView())
-            .registerEmpty(NiceEmptyView())
-            .registerError(NiceErrorView())
-            .registerRetry(NiceRetryView())
-            .wrapContent(view_content)
-    }
+private val niceStateView: NiceStateView by lazy {
+    NiceStateView.newBuilder()
+        .registerLoading(NiceLoadingView())
+        .registerEmpty(NiceEmptyView())
+        .registerError(NiceErrorView())
+        .registerRetry(NiceRetryView())
+        .wrapContent(view_content)
+}
 ```
 
 ## 注册自定义的Type
@@ -120,6 +123,8 @@ niceStateView.showCustom(key:String)
 ## 问题反馈Q群：1078185041
 
 ## 版本迭代
+
+* v1.0.5：迁移到`jitpack`
 
 * v1.0.4 新增直接注册`layout布局`的方法，修改Api调用。
 
