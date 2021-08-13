@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 
+/**
+ *  做状态切换的Layout
+ */
 internal class NiceStateLayout : FrameLayout {
 
     constructor(context: Context) : super(context)
@@ -16,8 +19,7 @@ internal class NiceStateLayout : FrameLayout {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        this.addView(contentView,
-            CONTENT_VIEW_INDEX, lp)
+        this.addView(contentView, CONTENT_VIEW_INDEX, lp)
     }
 
     fun showContentView() {
@@ -28,14 +30,10 @@ internal class NiceStateLayout : FrameLayout {
     fun attachView(curView: View) {
         val lastView: View? = this.getChildAt(STATE_VIEW_INDEX)
         if (lastView == null) {
-            this.addView(curView,
-                STATE_VIEW_INDEX
-            )
+            this.addView(curView, STATE_VIEW_INDEX)
         } else {
             this.removeView(lastView)
-            this.addView(curView,
-                STATE_VIEW_INDEX
-            )
+            this.addView(curView, STATE_VIEW_INDEX)
         }
 
         curView.bringToFront()

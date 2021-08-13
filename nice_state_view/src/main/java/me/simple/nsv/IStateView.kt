@@ -52,4 +52,9 @@ abstract class IStateView {
         view?.findViewById<ImageView>(id)?.setImageResource(resId)
         return this
     }
+
+    /**
+     *
+     */
+    fun <T : View> getView(id: Int) = view?.findViewById<T>(id)
 }
