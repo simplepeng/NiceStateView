@@ -129,5 +129,8 @@ interface NiceStateView {
 //            return wrapContent(fragment.view)
 //        }
 
+        fun getStateView(key: String): IStateView {
+            return stateViewMap[key] ?: throw NullPointerException("do you have register $key ?")
+        }
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NiceStateLayout">
+        <attr name="empty_layout_res" format="reference" />
+        <attr name="error_layout_res" format="reference" />
+        <attr name="retry_layout_res" format="reference" />
+        <attr name="loading_layout_res" format="reference" />
+    </declare-styleable>
+</resources>

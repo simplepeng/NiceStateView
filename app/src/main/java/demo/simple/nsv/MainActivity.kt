@@ -6,10 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import me.simple.nsv.NiceStateView
-import me.simple.nsv.sample.NiceEmptyView
-import me.simple.nsv.sample.NiceErrorView
-import me.simple.nsv.sample.NiceLoadingView
-import me.simple.nsv.sample.NiceRetryView
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +31,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        btnLayout.setOnClickListener {
+            startActivity(Intent(this, LayoutActivity::class.java))
+        }
 
         niceStateView.showLoading().setOnViewClickListener(R.id.pb_loading) {
             toast("showLoading")

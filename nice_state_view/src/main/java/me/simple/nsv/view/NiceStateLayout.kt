@@ -1,20 +1,53 @@
 package me.simple.nsv.view
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import me.simple.nsv.IStateView
+import me.simple.nsv.NiceStateView
+import me.simple.nsv.R
+import me.simple.nsv.sample.NiceWrapperView
 
 /**
  *  做状态切换的Layout
  */
-internal class NiceStateLayout : FrameLayout {
+class NiceStateLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs), NiceStateView {
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    private val builder = NiceStateView.newBuilder()
 
-    fun setContentView(contentView: View) {
+    init {
+        context.obtainStyledAttributes(attrs, R.styleable.NiceStateLayout)?.apply {
+            initAttrs(this)
+        }?.recycle()
+    }
+
+    private fun initAttrs(ta: TypedArray) {
+        if (ta.hasValue(R.styleable.NiceStateLayout_empty_layout_res)) {
+            val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_empty_layout_res, -1)
+            builder.registerEmpty(emptyLayoutRes)
+        }
+        if (ta.hasValue(R.styleable.NiceStateLayout_loading_layout_res)) {
+            val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_loading_layout_res, -1)
+            builder.registerLoading(emptyLayoutRes)
+        }
+        if (ta.hasValue(R.styleable.NiceStateLayout_error_layout_res)) {
+            val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_error_layout_res, -1)
+            builder.registerError(emptyLayoutRes)
+        }
+        if (ta.hasValue(R.styleable.NiceStateLayout_retry_layout_res)) {
+            val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_retry_layout_res, -1)
+            builder.registerRetry(emptyLayoutRes)
+        }
+    }
+
+    internal fun setContentView(contentView: View) {
         val lp = LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
@@ -22,7 +55,7 @@ internal class NiceStateLayout : FrameLayout {
         this.addView(contentView, CONTENT_VIEW_INDEX, lp)
     }
 
-    fun showContentView() {
+    internal fun showContentView() {
         this.removeViewAt(STATE_VIEW_INDEX)
 //        this.requestLayout()
     }
@@ -41,6 +74,53 @@ internal class NiceStateLayout : FrameLayout {
 
     fun detachView(lastView: View) {
         this.removeView(lastView)
+    }
+
+    private fun createView(stateView: IStateView): View {
+        val curView = LayoutInflater.from(context).inflate(stateView.setLayoutRes(), this, false)
+        stateView.view = curView
+        return curView
+    }
+
+    override fun showLoading(): IStateView {
+        val stateView = builder.getStateView(NiceStateView.STATE_LOADING)
+        attachView(createView(stateView))
+        return stateView
+    }
+
+    override fun showEmpty(): IStateView {
+        val stateView = builder.getStateView(NiceStateView.STATE_EMPTY)
+        attachView(createView(stateView))
+        return stateView
+    }
+
+    override fun showError(): IStateView {
+        val stateView = builder.getStateView(NiceStateView.STATE_ERROR)
+        attachView(createView(stateView))
+        return stateView
+    }
+
+    override fun showRetry(): IStateView {
+        val stateView = builder.getStateView(NiceStateView.STATE_RETRY)
+        attachView(createView(stateView))
+        return stateView
+    }
+
+    override fun showContent() {
+        showContentView()
+    }
+
+    fun registerCustom(key: String, layoutRes: Int) {
+        val stateView = NiceWrapperView(layoutRes)
+        registerCustom(key, stateView)
+    }
+
+    fun registerCustom(key: String, stateView: IStateView) {
+        builder.registerCustom(key, stateView)
+    }
+
+    override fun showCustom(key: String): IStateView {
+        return builder.getStateView(key)
     }
 
     companion object {
