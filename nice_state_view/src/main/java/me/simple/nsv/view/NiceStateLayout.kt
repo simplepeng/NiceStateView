@@ -21,6 +21,7 @@ class NiceStateLayout @JvmOverloads constructor(
 ) : FrameLayout(context, attrs), NiceStateView {
 
     private val builder = NiceStateView.newBuilder()
+    private var contentView: View? = null
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.NiceStateLayout)?.apply {
@@ -34,7 +35,8 @@ class NiceStateLayout @JvmOverloads constructor(
             builder.registerEmpty(emptyLayoutRes)
         }
         if (ta.hasValue(R.styleable.NiceStateLayout_loading_layout_res)) {
-            val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_loading_layout_res, -1)
+            val emptyLayoutRes =
+                ta.getResourceId(R.styleable.NiceStateLayout_loading_layout_res, -1)
             builder.registerLoading(emptyLayoutRes)
         }
         if (ta.hasValue(R.styleable.NiceStateLayout_error_layout_res)) {
@@ -45,6 +47,12 @@ class NiceStateLayout @JvmOverloads constructor(
             val emptyLayoutRes = ta.getResourceId(R.styleable.NiceStateLayout_retry_layout_res, -1)
             builder.registerRetry(emptyLayoutRes)
         }
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        if (childCount < 1) return
+        contentView = getChildAt(0)
     }
 
     internal fun setContentView(contentView: View) {
@@ -82,16 +90,19 @@ class NiceStateLayout @JvmOverloads constructor(
         return curView
     }
 
-    override fun showLoading(): IStateView {
-        val stateView = builder.getStateView(NiceStateView.STATE_LOADING)
+    private fun showStateView(key: String): IStateView {
+        val stateView = builder.getStateView(key)
+        contentView?.visibility = View.GONE
         attachView(createView(stateView))
         return stateView
     }
 
+    override fun showLoading(): IStateView {
+        return showStateView(NiceStateView.STATE_LOADING)
+    }
+
     override fun showEmpty(): IStateView {
-        val stateView = builder.getStateView(NiceStateView.STATE_EMPTY)
-        attachView(createView(stateView))
-        return stateView
+        return showStateView(NiceStateView.STATE_EMPTY)
     }
 
     override fun showError(): IStateView {
@@ -107,6 +118,7 @@ class NiceStateLayout @JvmOverloads constructor(
     }
 
     override fun showContent() {
+        contentView?.visibility = View.VISIBLE
         showContentView()
     }
 
