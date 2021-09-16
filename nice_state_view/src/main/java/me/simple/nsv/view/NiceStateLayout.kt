@@ -106,15 +106,11 @@ class NiceStateLayout @JvmOverloads constructor(
     }
 
     override fun showError(): IStateView {
-        val stateView = builder.getStateView(NiceStateView.STATE_ERROR)
-        attachView(createView(stateView))
-        return stateView
+        return showStateView(NiceStateView.STATE_ERROR)
     }
 
     override fun showRetry(): IStateView {
-        val stateView = builder.getStateView(NiceStateView.STATE_RETRY)
-        attachView(createView(stateView))
-        return stateView
+        return showStateView(NiceStateView.STATE_RETRY)
     }
 
     override fun showContent() {

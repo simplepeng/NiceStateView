@@ -17,6 +17,8 @@ class LayoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout)
 
+        stateLayout.registerCustom("login", R.layout.layout_login)
+
         btn_loading.setOnClickListener {
             stateLayout.showLoading().setOnViewClickListener(R.id.pb_loading) {
                 toast("showLoading")
