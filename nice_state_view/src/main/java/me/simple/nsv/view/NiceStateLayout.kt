@@ -3,6 +3,7 @@ package me.simple.nsv.view
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,10 @@ class NiceStateLayout @JvmOverloads constructor(
 ) : FrameLayout(context, attrs), NiceStateView {
 
     private val builder = NiceStateView.newBuilder()
+    private val viewHolder = SparseArray<View?>()
     private var contentView: View? = null
+
+    private var curSateViewKey = NiceStateView.STATE_CONTENT
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.NiceStateLayout)?.apply {
@@ -49,8 +53,8 @@ class NiceStateLayout @JvmOverloads constructor(
         }
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         if (childCount < 1) return
         contentView = getChildAt(0)
     }
@@ -64,6 +68,7 @@ class NiceStateLayout @JvmOverloads constructor(
     }
 
     internal fun showContentView() {
+        if (childCount <= 1) return
         this.removeViewAt(STATE_VIEW_INDEX)
 //        this.requestLayout()
     }
@@ -84,16 +89,42 @@ class NiceStateLayout @JvmOverloads constructor(
         this.removeView(lastView)
     }
 
+    private fun getView(stateView: IStateView): View {
+        var view = viewHolder[stateView.setLayoutRes()]
+        if (view == null) {
+            view = createView(stateView)
+        }
+        return view
+    }
+
     private fun createView(stateView: IStateView): View {
-        val curView = LayoutInflater.from(context).inflate(stateView.setLayoutRes(), this, false)
+        val curView = LayoutInflater.from(context)
+            .inflate(stateView.setLayoutRes(), this, false)
         stateView.view = curView
         return curView
     }
 
     private fun showStateView(key: String): IStateView {
-        val stateView = builder.getStateView(key)
+        if (key == curSateViewKey) return builder.getStateView(key)!!
+
+        //detach last view
+        val lastIStateView = builder.getStateView(curSateViewKey)
+        if (lastIStateView != null) {
+            val lastView = viewHolder[lastIStateView.setLayoutRes()]
+            if (lastView != null) {
+                lastIStateView.onDetach(lastView)
+                detachView(lastView)
+            }
+        }
+
         contentView?.visibility = View.GONE
-        attachView(createView(stateView))
+
+        val stateView =
+            builder.getStateView(key) ?: throw NullPointerException("do you have register $key ?")
+        val curView = getView(stateView)
+        stateView.onAttach(curView)
+        attachView(curView)
+        curSateViewKey = key
         return stateView
     }
 
@@ -115,6 +146,7 @@ class NiceStateLayout @JvmOverloads constructor(
 
     override fun showContent() {
         contentView?.visibility = View.VISIBLE
+        curSateViewKey = NiceStateView.STATE_CONTENT
         showContentView()
     }
 
@@ -128,7 +160,7 @@ class NiceStateLayout @JvmOverloads constructor(
     }
 
     override fun showCustom(key: String): IStateView {
-        return builder.getStateView(key)
+        return showStateView(key)
     }
 
     companion object {
