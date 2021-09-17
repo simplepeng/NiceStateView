@@ -1,5 +1,6 @@
 package me.simple.nsv.view
 
+import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ class LayoutStateView internal constructor(
     private var curSateViewKey = NiceStateView.STATE_CONTENT
     private var parentViewGroup: ViewGroup? = contentView.parent as ViewGroup?
     private val stateLayout = NiceStateLayout(contentView.context)
-    private val viewHolder = mutableMapOf<Int, View>()
+    private val viewHolder = SparseArray<View>()
 
     init {
         if (parentViewGroup == null) {
@@ -55,6 +56,20 @@ class LayoutStateView internal constructor(
         return showStateView(key)
     }
 
+    private fun createView(stateView: IStateView): View {
+        return LayoutInflater.from(contentView.context)
+            .inflate(stateView.setLayoutRes(), stateLayout, false)
+    }
+
+    private fun getView(stateView: IStateView): View {
+        var view = viewHolder[stateView.setLayoutRes()]
+        if (view == null) {
+            view = createView(stateView)
+            viewHolder.put(stateView.setLayoutRes(), view)
+        }
+        return view
+    }
+
     private fun showStateView(
         key: String
     ): IStateView {
@@ -62,46 +77,38 @@ class LayoutStateView internal constructor(
 
         //detach last view
         val lastIStateView = getStateView(curSateViewKey)
-        if (lastIStateView != null) {
-            val lastView = viewHolder[lastIStateView.setLayoutRes()]
-            if (lastView != null) {
-                lastIStateView.onDetach(lastView)
-                stateLayout.detachView(lastView)
-            }
-        }
-
-        //attach current view
-        val curIStateView =
-            getStateView(key) ?: throw NullPointerException("do you have register $key ?")
-
-        var curView: View? = viewHolder[curIStateView.setLayoutRes()]
-        if (curView == null) {
-            curView = LayoutInflater.from(contentView.context)
-                .inflate(curIStateView.setLayoutRes(), stateLayout, false)
-            viewHolder[curIStateView.setLayoutRes()] = curView
+        if (lastIStateView?.view != null) {
+            lastIStateView.onDetach(lastIStateView.view!!)
+            stateLayout.detachView(lastIStateView.view!!)
         }
 
         contentView.visibility = View.GONE
-        stateLayout.attachView(curView!!)
+
+        //attach current view
+        val curIStateView = getStateView(key)
+            ?: throw NullPointerException("do you have register $key ?")
+
+        val curView: View = getView(curIStateView)
+        stateLayout.attachView(curView)
         curIStateView.onAttach(curView)
 
         curSateViewKey = key
+
         return curIStateView
     }
 
     private fun innerShowContentView() {
         if (curSateViewKey == NiceStateView.STATE_CONTENT) return
 
-        val curStateView = getStateView(curSateViewKey)
-        if (curStateView != null) {
-            val detachView = viewHolder[curStateView.setLayoutRes()]
-            if (detachView != null) {
-                curStateView.onDetach(detachView)
-            }
+        val lastStateView = getStateView(curSateViewKey)
+        if (lastStateView?.view != null) {
+            lastStateView.onDetach(lastStateView.view!!)
+            stateLayout.detachView(lastStateView.view!!)
         }
 
         contentView.visibility = View.VISIBLE
         stateLayout.showContentView()
+
         curSateViewKey = NiceStateView.STATE_CONTENT
     }
 
