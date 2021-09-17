@@ -74,15 +74,16 @@ class NiceStateLayout @JvmOverloads constructor(
     }
 
     fun attachView(curView: View) {
-        val lastView: View? = this.getChildAt(STATE_VIEW_INDEX)
-        if (lastView == null) {
-            this.addView(curView, STATE_VIEW_INDEX)
-        } else {
-            this.removeView(lastView)
-            this.addView(curView, STATE_VIEW_INDEX)
-        }
+        addView(curView, STATE_VIEW_INDEX)
+//        val lastView: View? = this.getChildAt(STATE_VIEW_INDEX)
+//        if (lastView == null) {
+//            this.addView(curView, STATE_VIEW_INDEX)
+//        } else {
+//            this.removeView(lastView)
+//            this.addView(curView, STATE_VIEW_INDEX)
+//        }
 
-        curView.bringToFront()
+//        curView.bringToFront()
     }
 
     fun detachView(lastView: View) {
@@ -93,6 +94,7 @@ class NiceStateLayout @JvmOverloads constructor(
         var view = viewHolder[stateView.setLayoutRes()]
         if (view == null) {
             view = createView(stateView)
+            viewHolder.put(stateView.setLayoutRes(), view)
         }
         return view
     }
@@ -109,18 +111,16 @@ class NiceStateLayout @JvmOverloads constructor(
 
         //detach last view
         val lastIStateView = builder.getStateView(curSateViewKey)
-        if (lastIStateView != null) {
-            val lastView = viewHolder[lastIStateView.setLayoutRes()]
-            if (lastView != null) {
-                lastIStateView.onDetach(lastView)
-                detachView(lastView)
-            }
+        if (lastIStateView?.view != null) {
+            lastIStateView.onDetach(lastIStateView.view!!)
+            detachView(lastIStateView.view!!)
         }
 
         contentView?.visibility = View.GONE
 
-        val stateView =
-            builder.getStateView(key) ?: throw NullPointerException("do you have register $key ?")
+        //attach current view
+        val stateView = builder.getStateView(key)
+            ?: throw NullPointerException("do you have register $key ?")
         val curView = getView(stateView)
         stateView.onAttach(curView)
         attachView(curView)
