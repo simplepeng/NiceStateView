@@ -15,22 +15,47 @@ maven { url 'https://jitpack.io' }
 ```
 
 ```groovy
-implementation 'com.github.simplepeng:NiceStateView:v1.0.5'
+implementation 'com.github.simplepeng:NiceStateView:v1.0.6'
 ```
 
 ## 使用默认样式
 
+1. 在代码中使用
+
 ```kotlin
 //初始化注册不同的状态布局
-  private val niceStateView: NiceStateView by lazy {
-      NiceStateView.newBuilder()
-          .registerLoading(R.layout.sample_loading_view)
-          .registerEmpty(R.layout.sample_empty_view)
-          .registerError(R.layout.sample_error_view)
-          .registerRetry(R.layout.sample_retry_view)
-          .registerCustom("login", R.layout.layout_login)
-          .wrapContent(view_content)
+private val niceStateView: NiceStateView by lazy {
+    NiceStateView.newBuilder()
+        .registerLoading(R.layout.sample_loading_view)
+        .registerEmpty(R.layout.sample_empty_view)
+        .registerError(R.layout.sample_error_view)
+        .registerRetry(R.layout.sample_retry_view)
+        .registerCustom("login", R.layout.layout_login)
+        .wrapContent(view_content)
 }
+```
+
+2. 在xml中使用
+
+```xml
+<me.simple.nsv.view.NiceStateLayout
+    android:id="@+id/stateLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    
+    app:empty_layout_res="@layout/sample_empty_view"
+    app:error_layout_res="@layout/sample_error_view"
+    app:loading_layout_res="@layout/sample_loading_view"
+    app:retry_layout_res="@layout/sample_retry_view">
+```
+
+上面两种方法任选其一，`不可混用`。
+
+```kotlin
 //切换状态布局
 niceStateView.showLoading()
 niceStateView.showEmpty()
@@ -39,6 +64,8 @@ niceStateView.showRetry()
 niceStateView.showContent()
 niceStateView.showCustom(key:String)
 ```
+
+
 
 ## 设置点击事件
 
@@ -59,9 +86,9 @@ niceStateView.showEmpty()
              .setImage(R.id.iv_empty, R.drawable.nsv_empty)
 ```
 
-## 自定义
+## 特殊场景
 
-继承`IStateView`类，重写需要用到的方法。可以在`onAttch`或`onDetch`方法中`初始化资源`或者`释放资源`
+有些场景需要初始化耗时的动画，或者切换布局后需要释放掉动画资源，那么就需要继承`IStateView`类，重写需要用到的方法。可以在`onAttch`或`onDetch`方法中`初始化资源`或者`释放资源`
 
 ```kotlin
 class NiceLoadingView : IStateView() {
@@ -124,10 +151,9 @@ niceStateView.showCustom(key:String)
 
 ## 版本迭代
 
+* v1.0.6：支持直接在`xml`中定义`NiceStateLayout`
 * v1.0.5：迁移到`jitpack`
-
 * v1.0.4 新增直接注册`layout布局`的方法，修改Api调用。
-
 * v1.0.3 新增`注册，显示`自定义type的方法
 * v1.0.2 fix ConstraintLayout LayoutParams 0dp bug
 * v1.0.1 新增`setText`，`setImage`等方法

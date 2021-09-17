@@ -8,12 +8,13 @@
         android:id="@+id/stateLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:empty_layout_res="@layout/sample_empty_view"
-        app:error_layout_res="@layout/sample_error_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
+        app:empty_layout_res="@layout/sample_empty_view"
+        app:error_layout_res="@layout/sample_error_view"
         app:loading_layout_res="@layout/sample_loading_view"
         app:retry_layout_res="@layout/sample_retry_view">
 
