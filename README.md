@@ -65,8 +65,6 @@ niceStateView.showContent()
 niceStateView.showCustom(key:String)
 ```
 
-
-
 ## 设置点击事件
 
 ```kotlin
